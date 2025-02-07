@@ -4,8 +4,10 @@ void main() {
   runApp(
     const MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.greenAccent,
+        
         body: Center(
-          child: Text("Hello Sohail!"),
+          child: Text("Hello Sohail"),
         ),
       ),
     ),
