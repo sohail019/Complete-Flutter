@@ -20,8 +20,24 @@ class GradientContainer extends StatelessWidget {
           end: endAlignment,
         ),
       ),
-      // child: StyledText("Hello Sohail!"),
-      child: Center(child: DiceRoller()),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DiceRoller(),
+            Padding(
+              padding: const EdgeInsets.all(60.0),
+              child: Text(
+                'Developed by Sohail',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
