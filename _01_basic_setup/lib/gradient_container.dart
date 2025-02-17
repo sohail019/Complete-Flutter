@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:_01_basic_setup/styled_text.dart';
+
+var startAlignment = Alignment.topLeft;
+var endAlignment = Alignment.bottomRight;
 
 // Understanding classes
 class GradientContainer extends StatelessWidget {
@@ -7,7 +11,7 @@ class GradientContainer extends StatelessWidget {
   @override
   Widget build(context) {
     return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Colors.red,
@@ -16,27 +20,10 @@ class GradientContainer extends StatelessWidget {
               Colors.green,
               // Colors.yellow
             ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: startAlignment,
+            end: endAlignment,
           ),
         ),
         child: StyledText());
-  }
-}
-
-// Custom Widget for styled text\
-
-class StyledText extends StatelessWidget {
-  const StyledText({super.key});
-
-  @override
-  Widget build(context) {
-    return Center(
-      child: Text(
-        "Hello Sohail Shaikh!",
-        style: TextStyle(
-            fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
-      ),
-    );
   }
 }
