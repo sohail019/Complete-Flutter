@@ -15,10 +15,18 @@ void main() {
                 Colors.green,
                 // Colors.yellow
               ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
           ),
           child: const Center(
-            child: Text("Hello Sohail"),
+            child: Text(
+              "Hello Sohail",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+              ),
+            ),
           ),
         ),
       ),
