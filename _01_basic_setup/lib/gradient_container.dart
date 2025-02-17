@@ -9,6 +9,10 @@ class GradientContainer extends StatelessWidget {
 
   final List<Color> colors;
 
+  rollDice() {
+    print('Dice rolled');
+  }
+
   @override
   Widget build(context) {
     return Container(
@@ -19,7 +23,30 @@ class GradientContainer extends StatelessWidget {
           end: endAlignment,
         ),
       ),
-      child: StyledText("Hello Sohail!"),
+      // child: StyledText("Hello Sohail!"),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/images/dice-2.png',
+              width: 200,
+            ),
+            const SizedBox(height: 20),
+            TextButton(
+              onPressed: rollDice,
+              style: TextButton.styleFrom(
+                // padding: EdgeInsets.only(
+                //   top: 20,
+                // ),
+                foregroundColor: Colors.black,
+                textStyle: const TextStyle(fontSize: 28),
+              ),
+              child: const Text('Roll Dice'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
