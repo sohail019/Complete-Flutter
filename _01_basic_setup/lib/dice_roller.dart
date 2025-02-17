@@ -13,12 +13,19 @@ class DiceRoller extends StatefulWidget {
 }
 
 class _DiceRollerState extends State<DiceRoller> {
-  // var activeDiceImage = 'assets/images/dice-2.png';
   var currentDiceRoll = 2;
-  rollDice() {
+  var isLoading = false;
+
+  rollDice() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 1));
+
     setState(() {
       currentDiceRoll = randomizer.nextInt(6) + 1;
-      // activeDiceImage = 'assets/images/dice-$diceRoll.png';
+      isLoading = false;
     });
   }
 
@@ -27,10 +34,13 @@ class _DiceRollerState extends State<DiceRoller> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(
-          'assets/images/dice-$currentDiceRoll.png',
-          width: 200,
-        ),
+        if (isLoading)
+          const CircularProgressIndicator()
+        else
+          Image.asset(
+            'assets/images/dice-$currentDiceRoll.png',
+            width: 200,
+          ),
         const SizedBox(height: 20),
         Text(
           'You rolled: $currentDiceRoll',
