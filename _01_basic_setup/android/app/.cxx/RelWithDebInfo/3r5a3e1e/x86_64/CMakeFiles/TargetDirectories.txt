@@ -1,0 +1,2 @@
+C:/Users/SOHAIL SHAIKH/Desktop/Digital Salt/Flutter/_01_basic_setup/android/app/.cxx/RelWithDebInfo/3r5a3e1e/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/SOHAIL SHAIKH/Desktop/Digital Salt/Flutter/_01_basic_setup/android/app/.cxx/RelWithDebInfo/3r5a3e1e/x86_64/CMakeFiles/rebuild_cache.dir
