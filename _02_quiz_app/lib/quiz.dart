@@ -41,10 +41,17 @@ class _QuizState extends State<Quiz> {
 
     if(selectedAnswers.length == questions.length){
       setState(() {
-        selectedAnswers = [];
+        // selectedAnswers = [];
         activeScreen = "results-screen";
       });
     }
+  }
+
+   void restartQuiz() {
+    setState(() {
+      selectedAnswers = [];
+      activeScreen = 'questions-screen';
+    });
   }
 
   @override
@@ -56,12 +63,17 @@ class _QuizState extends State<Quiz> {
 
     Widget screenWidget = StartScreen(swithScreen);
 
-    if (activeScreen == "questions-screen") {
-      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
+   if (activeScreen == 'questions-screen') {
+      screenWidget = QuestionsScreen(
+        onSelectAnswer: chooseAnswer,
+      );
     }
 
-    if (activeScreen == "results-screen") {
-      screenWidget = ResultsScreen(chosenAnswer: selectedAnswers);
+    if (activeScreen == 'results-screen') {
+      screenWidget = ResultsScreen(
+        chosenAnswer: selectedAnswers,
+        onRestart: restartQuiz,
+      );
     }
     return MaterialApp(
       title: "Quiz App",

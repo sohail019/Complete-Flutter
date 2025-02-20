@@ -28,22 +28,26 @@ class StartScreen extends StatelessWidget {
           // ),
           Opacity(
             opacity: 0.9,
-            child: Image.asset('assets/images/quiz-logo.png', width: 200),
+            child: Image.asset('assets/images/logo.png', width: 200),
           ),
           const SizedBox(height: 80),
           const Text(
-            'Welcome to the Quiz!',
+            'Welcome to the KBC!',
             style: TextStyle(
               fontSize: 28,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Text(
-            'Learn Flutter the fun way!',
-            style: GoogleFonts.lato(fontSize: 20, color:  Colors.white),
+          Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Text(
+              'Get ready for the ultimate journey to become Crorepati!',
+              style: GoogleFonts.lato(fontSize: 20, color:  Colors.white),
+              textAlign: TextAlign.center,
+            ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 30),
           ElevatedButton.icon(
             onPressed: () {
               startQuiz();
@@ -55,7 +59,7 @@ class StartScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               textStyle: const TextStyle(fontSize: 20),
             ),
-            label: const Text('Start Quiz'),
+            label: const Text('Start the Game'),
           ),
         ],
       ),
