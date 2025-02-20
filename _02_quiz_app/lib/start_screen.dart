@@ -1,41 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:audioplayers/audioplayers.dart';  // Import the package
 
-class StartScreen extends StatelessWidget {
+class StartScreen extends StatefulWidget {
   const StartScreen(this.startQuiz, {super.key});
 
   final void Function() startQuiz;
+
   @override
-  Widget build(context) {
+  _StartScreenState createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> with SingleTickerProviderStateMixin {
+  late AudioPlayer _audioPlayer;
+  late AnimationController _animationController;
+  late Animation<double> _rotationAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+
+   
+    _rotationAnimation = Tween<double>(begin: 0, end: 3.14) 
+        .animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+
+ 
+    _playIntroMusic();
+
+    _animationController.forward();
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _animationController.reverse();
+      }
+    });
+  }
+
+  // Method to play the intro music
+  void _playIntroMusic() async {
+    await _audioPlayer.play(AssetSource('audio/kbc-intro.mp3'));
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    _animationController.dispose(); 
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Image.asset(
-          //   'assets/images/quiz-logo.png',
-          //   width: 200,
-          //   color: Colors.red,
-          // ),
-          // Image.asset(
-          //   'assets/images/quiz-logo.png',
-          //   width: 200,
-          //   color: Colors.white.withAlpha(100),
-          // ),
-          // Image.asset(
-          //   'assets/images/quiz-logo.png',
-          //   width: 200,
-          //   color: Colors.white.withValues(alpha: 0.2),
-          // ),
-          Opacity(
-            opacity: 0.9,
-            child: Image.asset('assets/images/logo.png', width: 200),
+          // Animated logo flipping like a coin
+          AnimatedBuilder(
+            animation: _rotationAnimation,
+            builder: (context, child) {
+              return Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(_rotationAnimation.value),
+                child: child,
+              );
+            },
+            child: Opacity(
+              opacity: 0.9,
+              child: Image.asset('assets/images/logo.png', width: 200),
+            ),
           ),
-          const SizedBox(height: 80),
+          const SizedBox(height: 60),
           const Text(
             'Welcome to the KBC!',
             style: TextStyle(
               fontSize: 28,
-              color: Colors.white,
+              color: Color.fromARGB(255, 201, 153, 251),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -43,14 +88,14 @@ class StartScreen extends StatelessWidget {
             padding: const EdgeInsets.all(6.0),
             child: Text(
               'Get ready for the ultimate journey to become Crorepati!',
-              style: GoogleFonts.lato(fontSize: 20, color:  Colors.white),
+              style: GoogleFonts.lato(fontSize: 20, color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ),
           const SizedBox(height: 30),
           ElevatedButton.icon(
             onPressed: () {
-              startQuiz();
+              widget.startQuiz();
             },
             icon: const Icon(Icons.arrow_right_alt, size: 28),
             style: ElevatedButton.styleFrom(
