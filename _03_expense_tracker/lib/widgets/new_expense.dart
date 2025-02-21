@@ -18,6 +18,12 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController(); //? creates an object optimized for text input
   final _amountController = TextEditingController();
 
+  void _presentDatePicker() {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 1, now.month, now.day);
+    showDatePicker(context: context, initialDate: now, firstDate: firstDate, lastDate: now);
+  }
+
   //? delete the controller when the widget is removed from the widget tree
   @override
   void dispose() {
@@ -43,17 +49,30 @@ class _NewExpenseState extends State<NewExpense> {
               ),
             ),
           ),
-          TextField(
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              label: const Text("Amount"),
-              prefixText: "₹",
-              suffix: IconButton(
-                onPressed: () => _amountController.clear(),
-                icon: const Icon(Icons.clear),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _amountController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    label: const Text("Amount"),
+                    prefixText: "₹",
+                    suffix: IconButton(
+                      onPressed: () => _amountController.clear(),
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(width: 16),
+              Expanded(child: Row(
+                children: [
+                  const Text("Selected Date"),
+                  IconButton(icon: const Icon(Icons.calendar_today), onPressed: _presentDatePicker)
+                ],
+              ))
+            ],
           ),
           Row(
             children: [
