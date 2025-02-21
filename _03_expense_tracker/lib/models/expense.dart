@@ -5,7 +5,6 @@ import 'package:uuid/uuid.dart';
 final formatter = DateFormat.yMd();
 const uuid = Uuid();
 
-
 //? enum allows to create custom data types
 enum Category { leisure, food, transport, bills, work, others }
 
@@ -19,8 +18,12 @@ const categoryIcons = {
 };
 
 class Expense {
-  Expense({required this.title, required this.amount, required this.date, required this.category})
-    : id = uuid.v4();
+  Expense({
+    required this.title,
+    required this.amount,
+    required this.date,
+    required this.category,
+  }) : id = uuid.v4();
   final String id;
   final String title;
   final double amount;
