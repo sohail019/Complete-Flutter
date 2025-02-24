@@ -8,7 +8,6 @@ plugins {
 android {
     namespace = "com.example.u_04_get_meals_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
