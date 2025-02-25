@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({super.key, required this.meal});
+  const MealItem({super.key, required this.meal, required this.onSelectMeal});
 
   final Meal meal;
+
+  final void Function(BuildContext context, Meal meal) onSelectMeal;
 
   String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
@@ -27,7 +29,7 @@ class MealItem extends StatelessWidget {
       elevation: 2,
       //* InkWell is used to make the card clickable
       child: InkWell(
-        onTap: () {},
+        onTap: () => onSelectMeal(context, meal),
 
         // * Stack is used to stack the image on top of the card
         child: Stack(
