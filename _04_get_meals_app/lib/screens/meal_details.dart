@@ -18,7 +18,19 @@ class MealDetailsScreen extends ConsumerWidget {
         title: Text(meal.title),
         actions: [
           IconButton(
-            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: Tween(begin: 0.5, end: 1.0).animate(animation),
+                  child: child,
+                );
+              },
+              child: Icon(
+                isFavorite ? Icons.star : Icons.star_border,
+                key: ValueKey<bool>(isFavorite),
+              ),
+            ),
             onPressed: () {
               final wasAdded = ref
                   .read(favoriteMealsProvider.notifier)
@@ -43,11 +55,14 @@ class MealDetailsScreen extends ConsumerWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: Image.network(
-                meal.imageUrl,
-                fit: BoxFit.cover,
-                height: 300,
-                width: double.infinity,
+              child: Hero(
+                tag: meal.id,
+                child: Image.network(
+                  meal.imageUrl,
+                  fit: BoxFit.cover,
+                  height: 300,
+                  width: double.infinity,
+                ),
               ),
             ),
             const SizedBox(height: 14),

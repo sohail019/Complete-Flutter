@@ -34,16 +34,19 @@ class MealItem extends StatelessWidget {
         // * Stack is used to stack the image on top of the card
         child: Stack(
           children: [
-            FadeInImage(
-              placeholder: MemoryImage(
-                kTransparentImage,
-              ), //? placeholder image from transparent_image package
-              image: NetworkImage(
-                meal.imageUrl,
-              ), //? image fetch from internet url
-              fit: BoxFit.cover,
-              height: 200,
-              width: double.infinity,
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                placeholder: MemoryImage(
+                  kTransparentImage,
+                ), //? placeholder image from transparent_image package
+                image: NetworkImage(
+                  meal.imageUrl,
+                ), //? image fetch from internet url
+                fit: BoxFit.cover,
+                height: 200,
+                width: double.infinity,
+              ),
             ),
 
             //* Positioned is used to position the child widget
