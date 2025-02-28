@@ -1,3 +1,4 @@
+import 'package:_05_shopping_list_app/data/categories.dart';
 import 'package:flutter/material.dart';
 
 class NewItem extends StatefulWidget {
@@ -17,12 +18,49 @@ class _NewItemState extends State<NewItem> {
         child: Form(
           child: Column(
             children: [
+              // ? Textformfield instead of textfield
               TextFormField(
                 maxLength: 50,
                 decoration: InputDecoration(labelText: 'Item Name'),
+                autofocus: true,
+                cursorColor: Colors.white,
                 validator: (value) {
                   return 'Demo...';
                 },
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(labelText: 'Quantity'),
+                      initialValue: '1',
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: DropdownButtonFormField(
+                      items: [
+                        for (final category in categories.entries)
+                          DropdownMenuItem(
+                            value: category.value,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 20,
+                                  height: 20,
+                                  color: category.value.color,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(category.value.name),
+                              ],
+                            ),
+                          ),
+                      ],
+                      onChanged: (value) {},
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
