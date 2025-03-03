@@ -6,6 +6,7 @@ class FavoriteMealsNotifier extends StateNotifier<List<Meal>> {
   FavoriteMealsNotifier() : super([]);
   final sharedPrefController = SharedPrefController();
 
+
   bool toggleMealFavouriteStatus(Meal meal) {
     final mealIsFavorite = state.contains(meal);
 
@@ -14,7 +15,7 @@ class FavoriteMealsNotifier extends StateNotifier<List<Meal>> {
       return false;
     } else {
       state = [...state, meal];
-      sharedPrefController.storeStringData("favList", state);
+      sharedPrefController.storeListData("favList",state );
       return true;
     }
   }
