@@ -8,7 +8,6 @@ plugins {
 android {
     namespace = "com.example.u_06_favorite_places_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
