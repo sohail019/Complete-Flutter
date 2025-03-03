@@ -1,4 +1,5 @@
 import 'package:_06_favorite_places_app/models/place.dart';
+import 'package:_06_favorite_places_app/screens/places_detail.dart';
 import 'package:flutter/material.dart';
 
 class PlacesList extends StatelessWidget {
@@ -33,7 +34,14 @@ class PlacesList extends StatelessWidget {
             ),
           ),
           // subtitle: Text(places[index].location.address),
-          onTap: () {},
+          onTap: () {
+            // Go to detail page...
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => PlacesDetailScreen(place: places[index]),
+              ),
+            );
+          },
         );
       },
     );
