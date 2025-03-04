@@ -1,8 +1,7 @@
+import 'package:_06_favorite_places_app/screens/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:_06_favorite_places_app/screens/places.dart';
 
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
@@ -30,9 +29,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Great Places',
+      title: 'Great Products',
       theme: theme,
-      home: const PlacesScreen(),
+      home: const ProductsScreen(),
     );
   }
 }
