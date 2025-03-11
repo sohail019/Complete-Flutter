@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           width: 200,
                           fit: BoxFit.contain,
                         ),
-                        ElevatedButton(
+                        ElevatedButton.icon(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -47,7 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
                               ),
                             );
                           },
-                          child: const Text('Go to Carousel Screen'),
+                          icon: const Icon(Icons.arrow_forward),
+                          label: const Text('Go to Carousel Screen'),
                         ),
                       ],
                     ),
@@ -57,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(AppImages.wormLogo, height: 250, width: 349),
+                  Image.asset(AppImages.pokaGif, height: 250, width: 349),
                 ],
               ),
             ],

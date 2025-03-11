@@ -32,7 +32,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
           "Discover a wide range of genres and find your next favorite book.",
     },
     {
-      "title": "Personalized Recommendations",
+      "title": "Personalized Suggestions",
       "description":
           "Get book suggestions tailored to your reading preferences.",
     },
@@ -59,7 +59,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
     var orientation = MediaQuery.of(context).orientation;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
+    final lineWormHeight = 0.75.sh;
     final leftRightPosition = 57.0.w;
 
     return Scaffold(
@@ -72,7 +72,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
             right: leftRightPosition,
             child: Container(
               width: 1.w,
-              height: 0.75,
+              height: lineWormHeight,
               color: AppColors.pokaLineColor,
             ),
           ),
@@ -196,7 +196,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
                       },
                       options: CarouselOptions(
                         reverse: false,
-                        scrollDirection: Axis.horizontal,
+                        scrollDirection: Axis.vertical,
                         height: isTablet ? 0.5.sh : 0.35.sh,
                         viewportFraction: 1.0,
                         autoPlay: true,
