@@ -4,4 +4,5 @@ class AppImages {
   static String upsideDownWorm = "lib/assets/images/re_worm.png";
   static String splashGif = "lib/assets/gif/splash.gif";
   static String pokaGif = "lib/assets/gif/poka.gif";
+  static String goAheadArrowIcon = "lib/assets/icons/icon_go.png";
 }

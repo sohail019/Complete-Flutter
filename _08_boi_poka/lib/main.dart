@@ -1,7 +1,6 @@
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/navigation/app_router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +11,7 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 Future<void> main() async {
-  await dotenv.load();
+  // await dotenv.load();
 
   runApp(ProviderScope(child: MyApp()));
 }

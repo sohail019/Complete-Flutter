@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: 80,
+                bottom: 60,
                 child: Center(
                   child: SizedBox(
                     width: double.infinity,
@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(AppImages.wormLogo, height: 250, width: 349),
                 ],
