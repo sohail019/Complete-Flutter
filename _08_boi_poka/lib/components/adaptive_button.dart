@@ -50,7 +50,7 @@ class AdaptiveButtonWidget extends StatelessWidget {
         screenWidth * 0.08; // Thickness relative to height
 
     if (backgroundImage != null && overlayImage != null) {
-      return GestureDetector(
+      return InkWell(
         onTap: onTap,
         child: Stack(
           alignment: Alignment.center,
@@ -96,56 +96,60 @@ class AdaptiveButtonWidget extends StatelessWidget {
         ),
       );
     } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Opacity(
-            opacity: disabled ? 0.4 : 1,
-            child: Container(
-              color: AppColors.secondaryColor,
-              padding: EdgeInsets.all(1),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.h),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (iconImg != null)
-                      Image.asset(
-                        iconImg!,
-                        color: AppColors.primaryColor,
-                        height: iconSize,
-                        width: iconSize,
-                        fit: BoxFit.contain,
+      return GestureDetector(
+        onTap: onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Opacity(
+              opacity: disabled ? 0.4 : 1,
+              child: Container(
+                color: AppColors.secondaryColor,
+                padding: EdgeInsets.all(1),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5.h),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (iconImg != null)
+                        Image.asset(
+                          iconImg!,
+                          color: AppColors.primaryColor,
+                          height: iconSize,
+                          width: iconSize,
+                          fit: BoxFit.contain,
+                        ),
+                      SizedBox(width: 6.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 58.w,
+                            height: borderThickness,
+                            color: AppColors.primaryColor,
+                          ),
+                          SizedBox(height: isTablet ? 3.h : 0),
+                          Text(
+                            title ?? "",
+                            textAlign: TextAlign.start,
+                            style:
+                                AppTypography.typo14PrimaryTextBold.copyWith(),
+                          ),
+                          SizedBox(height: isTablet ? 5.h : 3.h),
+                          Container(
+                            width: 58.w,
+                            height: borderThickness,
+                            color: AppColors.primaryColor,
+                          ),
+                        ],
                       ),
-                    SizedBox(width: 6.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 58.w,
-                          height: borderThickness,
-                          color: AppColors.primaryColor,
-                        ),
-                        SizedBox(height: isTablet ? 3.h : 0),
-                        Text(
-                          title ?? "",
-                          textAlign: TextAlign.start,
-                          style: AppTypography.typo14PrimaryTextBold.copyWith(),
-                        ),
-                        SizedBox(height: isTablet ? 5.h : 3.h),
-                        Container(
-                          width: 58.w,
-                          height: borderThickness,
-                          color: AppColors.primaryColor,
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     }
   }

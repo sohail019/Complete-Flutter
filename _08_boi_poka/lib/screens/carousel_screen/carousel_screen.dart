@@ -1,7 +1,9 @@
 import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
+import 'package:_08_boi_poka/constants/app_routes.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
+import 'package:_08_boi_poka/screens/auth/signup_screen/signup_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -216,7 +218,12 @@ class _CarouselScreenState extends State<CarouselScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.w),
                   child: AdaptiveButtonWidget(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignupScreen()),
+                      );
+                    },
                     disabled: false,
                     title: "Skip",
                     iconImg: AppImages.goAheadArrowIcon,
