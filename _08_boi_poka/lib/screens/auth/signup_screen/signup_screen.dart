@@ -1,4 +1,5 @@
 import 'package:_08_boi_poka/components/adaptive_button.dart';
+import 'package:_08_boi_poka/components/custom_textfield_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
@@ -44,6 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Column(
                   children: [
                     const Text("Custom Text Field - Full Name"),
+                    CustomTextfield(),
                     SizedBox(height: formControlFieldGap),
                     const Text("Custom Text Field - Email"),
                     SizedBox(height: formControlFieldGap),
@@ -80,6 +82,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     SizedBox(width: 5.w),
                     AdaptiveButtonWidget(
                       onTap: () {},
+
                       title: 'Sign In',
                       disabled: false,
                       variant: 'link',
