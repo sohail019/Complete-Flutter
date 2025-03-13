@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/components/common_appbar.dart';
 import 'package:_08_boi_poka/components/custom_drawer.dart';
-import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/screens/carousel_screen/carousel_screen.dart';
@@ -31,7 +30,7 @@ class _LibScreenState extends State<LibScreen> {
             View.of(context).devicePixelRatio >=
         680;
     // var orientation = MediaQuery.of(context).orientation;
-    final screenWidth = MediaQuery.of(context).size.width;
+    // final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.h),

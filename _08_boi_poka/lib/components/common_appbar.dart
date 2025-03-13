@@ -27,14 +27,14 @@ class CommonAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isTablet =
-        View.of(context).physicalSize.shortestSide /
-            View.of(context).devicePixelRatio >=
-        680;
-    var orientation = MediaQuery.of(context).orientation;
+    // final isTablet =
+    //     View.of(context).physicalSize.shortestSide /
+    //         View.of(context).devicePixelRatio >=
+    //     680;
+    // var orientation = MediaQuery.of(context).orientation;
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final isPortrait = orientation == Orientation.portrait;
+    // final screenHeight = MediaQuery.of(context).size.height;
+    // final isPortrait = orientation == Orientation.portrait;
 
     final iconSize = 30.w;
     return AppBar(

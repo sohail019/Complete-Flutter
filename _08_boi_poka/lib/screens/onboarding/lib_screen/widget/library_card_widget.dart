@@ -22,10 +22,10 @@ class LibraryCardWidget extends StatelessWidget {
         View.of(context).physicalSize.shortestSide /
             View.of(context).devicePixelRatio >=
         680;
-    var orientation = MediaQuery.of(context).orientation;
+    // var orientation = MediaQuery.of(context).orientation;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isPortrait = orientation == Orientation.portrait;
+    // final isPortrait = orientation == Orientation.portrait;
 
     return GestureDetector(
       onTap: onTap,
@@ -54,7 +54,7 @@ class LibraryCardWidget extends StatelessWidget {
               children: [
                 Image.asset(
                   libicon,
-                  height: screenHeight * 0.045,
+                  height: screenHeight * 0.050,
                   fit: BoxFit.cover,
                 ),
                 Spacer(),
