@@ -18,4 +18,7 @@ class AppImages {
   static String bouncyPoka = "lib/assets/images/bouncy_poka.png";
   static String nextIcon = "lib/assets/icons/nexticon.png";
   static String completed = "lib/assets/icons/complete.png";
+  static String menuIcon = "lib/assets/icons/menu-icon.png";
+  static String smLogo = "lib/assets/images/logo-sm.png";
+  static String pokaLeftFacing = "lib/assets/images/poka-left-facing.png";
 }

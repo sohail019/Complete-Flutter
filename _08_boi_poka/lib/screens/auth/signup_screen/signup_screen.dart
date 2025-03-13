@@ -2,7 +2,6 @@ import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/components/custom_textfield_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
-import 'package:_08_boi_poka/constants/app_routes.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/screens/auth/signin_screen/signin_screen.dart';
 import 'package:_08_boi_poka/screens/auth/widgets/common_page_header_widget.dart';

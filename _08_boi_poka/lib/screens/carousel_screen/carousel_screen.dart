@@ -1,7 +1,6 @@
 import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
-import 'package:_08_boi_poka/constants/app_routes.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/screens/auth/signup_screen/signup_screen.dart';
 import 'package:auto_route/auto_route.dart';

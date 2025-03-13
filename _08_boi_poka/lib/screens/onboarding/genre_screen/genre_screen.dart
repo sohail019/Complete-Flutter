@@ -2,13 +2,14 @@ import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
-import 'package:_08_boi_poka/screens/genre_screen/data/genre_images.dart';
-import 'package:_08_boi_poka/screens/genre_screen/widgets/genre_widget.dart';
-import 'package:_08_boi_poka/screens/lib_screen/lib_screen.dart';
-import 'package:_08_boi_poka/screens/scale_screen/scale_screen.dart';
+import 'package:_08_boi_poka/screens/onboarding/genre_screen/data/genre_images.dart';
+import 'package:_08_boi_poka/screens/onboarding/genre_screen/widgets/genre_widget.dart';
+import 'package:_08_boi_poka/screens/onboarding/scale_screen/scale_screen.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+@RoutePage()
 class GenreScreen extends StatefulWidget {
   const GenreScreen({super.key});
 
@@ -70,7 +71,7 @@ class _GenreScreenState extends State<GenreScreen> {
         View.of(context).physicalSize.shortestSide /
             View.of(context).devicePixelRatio >=
         680;
-    var orientation = MediaQuery.of(context).orientation;
+    // var orientation = MediaQuery.of(context).orientation;
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,

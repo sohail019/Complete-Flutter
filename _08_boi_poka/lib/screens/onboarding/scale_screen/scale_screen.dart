@@ -3,10 +3,12 @@ import 'package:_08_boi_poka/components/custom_slider_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
-import 'package:_08_boi_poka/screens/lib_screen/lib_screen.dart';
+import 'package:_08_boi_poka/screens/onboarding/lib_screen/lib_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:auto_route/auto_route.dart';
 
+@RoutePage()
 class ScaleScreen extends StatefulWidget {
   const ScaleScreen({super.key});
 
@@ -27,10 +29,10 @@ class _ScaleScreenState extends State<ScaleScreen> {
         View.of(context).physicalSize.shortestSide /
             View.of(context).devicePixelRatio >=
         680;
-    var orientation = MediaQuery.of(context).orientation;
+    // var orientation = MediaQuery.of(context).orientation;
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final isPortrait = orientation == Orientation.portrait;
+    // final screenHeight = MediaQuery.of(context).size.height;
+    // final isPortrait = orientation == Orientation.portrait;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
       body: Stack(

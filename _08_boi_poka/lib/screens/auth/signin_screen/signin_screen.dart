@@ -55,10 +55,6 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isTablet =
-        View.of(context).physicalSize.shortestSide /
-            View.of(context).devicePixelRatio >=
-        680;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
       body: SingleChildScrollView(

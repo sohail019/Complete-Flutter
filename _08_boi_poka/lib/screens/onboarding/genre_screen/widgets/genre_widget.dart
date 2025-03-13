@@ -31,14 +31,14 @@ class _GenreWidgetState extends State<GenreWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final isTablet =
-        View.of(context).physicalSize.shortestSide /
-            View.of(context).devicePixelRatio >=
-        680;
-    var orientation = MediaQuery.of(context).orientation;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final isPortrait = orientation == Orientation.portrait;
+    // final isTablet =
+    //     View.of(context).physicalSize.shortestSide /
+    //         View.of(context).devicePixelRatio >=
+    //     680;
+    // var orientation = MediaQuery.of(context).orientation;
+    // final screenWidth = MediaQuery.of(context).size.width;
+    // final screenHeight = MediaQuery.of(context).size.height;
+    // final isPortrait = orientation == Orientation.portrait;
 
     final genreIconSize = 30.w;
     final likeIconSize = 10.w;
