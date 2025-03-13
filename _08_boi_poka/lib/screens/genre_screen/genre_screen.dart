@@ -2,6 +2,7 @@ import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
+import 'package:_08_boi_poka/screens/genre_screen/data/genre_images.dart';
 import 'package:_08_boi_poka/screens/genre_screen/widgets/genre_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,75 +20,47 @@ class _GenreScreenState extends State<GenreScreen> {
   final List<Map<String, dynamic>> genres = [
     {
       "text": "Romance",
-      "image": "lib/assets/icons/genres/romance.png",
+      "image": GenreImages.romance,
       // "image": AppImages.allowIcon,
       "isSelected": false,
     },
     {
       "text": "Crime & Thriller",
-      "image": "assets/images/genre/crime_and_thriller.png",
+      "image": GenreImages.crimeAndThriller,
       "isSelected": false,
     },
-    {
-      "text": "Fantasy",
-      "image": "assets/images/genre/fantasy.png",
-      "isSelected": false,
-    },
-    {
-      "text": "Mystery",
-      "image": "assets/images/genre/mystery.png",
-      "isSelected": false,
-    },
+    {"text": "Fantasy", "image": GenreImages.fantasy, "isSelected": false},
+    {"text": "Mystery", "image": GenreImages.mystery, "isSelected": false},
     {
       "text": "Science Fiction",
-      "image": "assets/images/genre/science_fiction.png",
+      "image": GenreImages.scienceFiction,
       "isSelected": false,
     },
-    {
-      "text": "Horror",
-      "image": "assets/images/genre/horror.png",
-      "isSelected": false,
-    },
+    {"text": "Horror", "image": GenreImages.horror, "isSelected": false},
     {
       "text": "Literary Fiction",
-      "image": "assets/images/genre/literary_fiction.png",
+      "image": GenreImages.literaryFiction,
       "isSelected": false,
     },
-    {
-      "text": "Drama",
-      "image": "assets/images/genre/drama.png",
-      "isSelected": false,
-    },
+    {"text": "Drama", "image": GenreImages.drama, "isSelected": false},
     {
       "text": "Young Adult",
-      "image": "assets/images/genre/young_adult.png",
+      "image": GenreImages.youngAdult,
       "isSelected": false,
     },
     {
       "text": "Biographies",
-      "image": "assets/images/genre/biographies.png",
+      "image": GenreImages.biographies,
       "isSelected": false,
     },
-    {
-      "text": "Self Help",
-      "image": "assets/images/genre/self_help.png",
-      "isSelected": false,
-    },
-    {
-      "text": "Cook Books",
-      "image": "assets/images/genre/cook_books.png",
-      "isSelected": false,
-    },
+    {"text": "Self Help", "image": GenreImages.selfHelp, "isSelected": false},
+    {"text": "Cook Books", "image": GenreImages.cookBooks, "isSelected": false},
     {
       "text": "Travel Writing",
-      "image": "assets/images/genre/travel_writing.png",
+      "image": GenreImages.travelWriting,
       "isSelected": false,
     },
-    {
-      "text": "True Crime",
-      "image": "assets/images/genre/true_crime.png",
-      "isSelected": false,
-    },
+    {"text": "True Crime", "image": GenreImages.trueCrime, "isSelected": false},
   ];
   @override
   Widget build(BuildContext context) {
@@ -109,7 +82,6 @@ class _GenreScreenState extends State<GenreScreen> {
               child: Image.asset(
                 AppImages.bouncyPoka,
                 width: isTablet ? 0.9.sw : screenWidth,
-
                 fit: BoxFit.contain,
               ),
             ),
@@ -122,7 +94,7 @@ class _GenreScreenState extends State<GenreScreen> {
                   padding: EdgeInsets.only(
                     left: isTablet ? 65.w : 70.w,
                     right: isTablet ? 20.w : 30.w,
-                    top: isTablet ? 105.h : 95.h,
+                    top: isTablet ? 105.h : 115.h,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,20 +144,23 @@ class _GenreScreenState extends State<GenreScreen> {
                           );
                         },
                       ),
-                      SizedBox(height: 55.h),
+                      SizedBox(height: 30.h),
                     ],
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 50.w,
+                    left: 60.w,
                     bottom: isTablet ? 30.h : 0,
                   ),
                   child: AdaptiveButtonWidget(
-                    disabled: !isNavigateEnable,
+                    disabled: false,
                     selectedGenreLen: selectedGenre.length,
-                    onTap: () {},
+                    onTap: () {
+                      //? select genre logic will come here
+                    },
                     title: "next",
+                    iconImg: AppImages.nextIcon,
                   ),
                 ),
               ],

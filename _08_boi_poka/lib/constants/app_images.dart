@@ -16,4 +16,5 @@ class AppImages {
   static String setPattern = "lib/assets/images/set_pattern.png";
   static String allowIcon = "lib/assets/icons/allow.png";
   static String bouncyPoka = "lib/assets/images/bouncy_poka.png";
+  static String nextIcon = "lib/assets/icons/nexticon.png";
 }
