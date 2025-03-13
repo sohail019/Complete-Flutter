@@ -4,6 +4,8 @@ import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/screens/genre_screen/data/genre_images.dart';
 import 'package:_08_boi_poka/screens/genre_screen/widgets/genre_widget.dart';
+import 'package:_08_boi_poka/screens/lib_screen/lib_screen.dart';
+import 'package:_08_boi_poka/screens/scale_screen/scale_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -158,6 +160,10 @@ class _GenreScreenState extends State<GenreScreen> {
                     selectedGenreLen: selectedGenre.length,
                     onTap: () {
                       //? select genre logic will come here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ScaleScreen()),
+                      );
                     },
                     title: "next",
                     iconImg: AppImages.nextIcon,
