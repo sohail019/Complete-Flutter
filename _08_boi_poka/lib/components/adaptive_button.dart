@@ -38,8 +38,8 @@ class AdaptiveButtonWidget extends StatelessWidget {
 
     final buttonHeight =
         screenHeight * 0.05; // Adjust proportionally (5% of screen height)
-    final buttonWidth =
-        screenWidth * 0.1; // Adjust proportionally (10% of screen width)
+    // final buttonWidth =
+    //     screenWidth * 0.1; // Adjust proportionally (10% of screen width)
     final iconSize =
         orientation == Orientation.portrait
             ? buttonHeight * 0.5

@@ -12,22 +12,10 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-@override
-void initState() {
+  @override
+  void initState() {
     // TODO: implement initState
     super.initState();
-    initializeView();
-  }
-
-  void initializeView () async {
-    await Future.delayed(const Duration(seconds: 3));
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CarouselScreen(),
-      ),
-    );
   }
 
   @override

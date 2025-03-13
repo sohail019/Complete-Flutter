@@ -198,7 +198,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
                       },
                       options: CarouselOptions(
                         reverse: false,
-                        scrollDirection: Axis.vertical,
+                        scrollDirection: Axis.horizontal,
                         height: isTablet ? 0.5.sh : 0.35.sh,
                         viewportFraction: 1.0,
                         autoPlay: true,

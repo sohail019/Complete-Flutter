@@ -11,4 +11,9 @@ class AppImages {
   static String googleIcon = "lib/assets/images/google_icon.png";
   static String goodreadsIcon = "lib/assets/images/g_icon.png";
   static String facebookIcon = "lib/assets/images/f_icon.png";
+  static String setPatternWorm = "lib/assets/images/set_pattern_worm.png";
+  static String faceId = "lib/assets/images/face_id.png";
+  static String setPattern = "lib/assets/images/set_pattern.png";
+  static String allowIcon = "lib/assets/icons/allow.png";
+  static String bouncyPoka = "lib/assets/images/bouncy_poka.png";
 }

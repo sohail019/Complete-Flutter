@@ -2,42 +2,63 @@ import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/components/custom_textfield_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
-import 'package:_08_boi_poka/constants/app_routes.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
-import 'package:_08_boi_poka/screens/auth/signin_screen/signin_screen.dart';
+import 'package:_08_boi_poka/screens/auth/signup_screen/signup_screen.dart';
 import 'package:_08_boi_poka/screens/auth/widgets/common_page_header_widget.dart';
+import 'package:_08_boi_poka/screens/set_pattern_screen/set_pattern_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 @RoutePage()
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class SigninScreen extends StatefulWidget {
+  final String? errorMessage;
+  final bool isLogout;
+  const SigninScreen({super.key, this.errorMessage, this.isLogout = false});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<SigninScreen> createState() => _SigninScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SigninScreenState extends State<SigninScreen> {
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneNumController = TextEditingController();
+  final mobileRegex = RegExp(r'^\d{10}$');
+  final _emailAndMobileNumController = TextEditingController();
   final _passwordController = TextEditingController();
+  // final AuthRemoteController _authRemoteController = AuthRemoteController();
+  final container = ProviderContainer();
+
+  @override
+  void dispose() {
+    _emailAndMobileNumController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    if (widget.errorMessage != null) {
+      Future.delayed(Duration(seconds: 2), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(widget.errorMessage!),
+            backgroundColor: Colors.red,
+          ),
+        );
+      });
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final isTablet =
-    //     View.of(context).physicalSize.shortestSide /
-    //         View.of(context).devicePixelRatio >=
-    //     680;
-    // var orientation = MediaQuery.of(context).orientation;
-    // final screenWidth = MediaQuery.of(context).size.width;
-    // final screenHeight = MediaQuery.of(context).size.height;
-
-    // final halfWormSize = screenWidth * 0.4;
-
-    final formControlFieldGap = 8.h;
+    final isTablet =
+        View.of(context).physicalSize.shortestSide /
+            View.of(context).devicePixelRatio >=
+        680;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
       body: SingleChildScrollView(
@@ -46,83 +67,84 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CommonPageHeaderWidget(title: 'let\'s get \nstarted.'),
+              CommonPageHeaderWidget(title: "Sign in to \nBoiPoka"),
               Padding(
-                padding: EdgeInsets.only(top: 52.h, left: 60.w, right: 60.w),
+                padding: EdgeInsets.only(
+                  top: 52.h,
+                  left: 60.w,
+                  right: 60.w,
+                  bottom: 20.h,
+                ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomTextfield(
                       onChangeCallback: () {
                         setState(() {});
                       },
-                      validators: [FormBuilderValidators.required()],
-                      controller: _nameController,
-                      title: "full name",
-                    ),
-                    SizedBox(height: formControlFieldGap),
-                    CustomTextfield(
-                      onChangeCallback: () {
-                        setState(() {});
-                      },
-                      controller: _emailController,
-                      title: "email",
-                      validators: [
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.email(),
-                      ],
-                    ),
-                    SizedBox(height: formControlFieldGap),
-                    CustomTextfield(
-                      onChangeCallback: () {
-                        setState(() {});
-                      },
-                      isOnlyNumber: true,
-                      maxLength: 10,
+                      controller: _emailAndMobileNumController,
+                      title: "mobile number",
                       validators: [
                         FormBuilderValidators.required(),
                         FormBuilderValidators.phoneNumber(),
                       ],
-                      controller: _phoneNumController,
-                      title: "phone number",
+                      isOnlyNumber: true,
+                      maxLength: 10,
                     ),
-                    SizedBox(height: formControlFieldGap),
+                    SizedBox(height: 8.h),
                     CustomTextfield(
-                      onChangeCallback: () {
-                        setState(() {});
-                      },
+                      onChangeCallback: () {},
                       controller: _passwordController,
                       title: "password",
                       validators: [
                         FormBuilderValidators.required(),
                         FormBuilderValidators.password(),
                       ],
-                      isObscure: true,
                     ),
-                    SizedBox(height: 24.h),
+                    SizedBox(height: 8.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AdaptiveButtonWidget(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SetPatternScreen(),
+                              ),
+                            );
+                          },
+                          title: "set pattern?",
+                          disabled: false,
+                          variant: "link",
+                        ),
+                        AdaptiveButtonWidget(
+                          onTap: () {},
+                          title: "add referral code",
+                          disabled: false,
+                          variant: "link",
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
+              SizedBox(height: 24.h),
               Padding(
-                padding: EdgeInsets.only(right: 40.w, left: 40.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    AdaptiveButtonWidget(
-                      onTap: () {},
-                      title: 'Register',
-                      iconImg: AppImages.registerIcon,
-                    ),
-                  ],
+                padding: EdgeInsets.only(left: 60.w, right: 60.w),
+                child: AdaptiveButtonWidget(
+                  onTap: () {},
+                  iconImg: AppImages.registerIcon,
+                  title: "Sign in",
                 ),
               ),
               SizedBox(height: 20.h),
               Padding(
                 padding: EdgeInsets.only(left: 60.w, right: 60.w),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "Already have an account?",
+                      "have not any account? ",
                       style: AppTypography.typo10PrimaryTextRegular,
                     ),
                     SizedBox(width: 5.w),
@@ -131,33 +153,32 @@ class _SignupScreenState extends State<SignupScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SigninScreen(),
+                            builder: (context) => SignupScreen(),
                           ),
                         );
                       },
-
-                      title: 'Sign In',
+                      title: "register",
                       disabled: false,
-                      variant: 'link',
-                      type: 'textBold',
+                      type: "textBold",
+                      variant: "link",
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 24.h),
               Padding(
                 padding: EdgeInsets.only(left: 60.w, right: 60.w),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
-                      "or sign up with",
+                      "or signin with",
                       style: AppTypography.title12PrimaryTextBold,
                     ),
                     SizedBox(height: 8.h),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         AdaptiveButtonWidget(
                           onTap: () {},
