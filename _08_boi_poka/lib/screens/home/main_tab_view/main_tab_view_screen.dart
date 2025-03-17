@@ -2,6 +2,9 @@ import 'package:_08_boi_poka/components/common_back_bar.dart';
 import 'package:_08_boi_poka/components/custom_tabbar.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/screens/home/all_screen/all_screen.dart';
+import 'package:_08_boi_poka/screens/home/audio_book_screen/audio_book_screen.dart';
+import 'package:_08_boi_poka/screens/home/ebook_screen/ebook_screen.dart';
+import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -44,9 +47,9 @@ class _MainTabViewScreenState extends State<MainTabViewScreen> {
           labelColor: Colors.white,
           screens: [
             AllScreen(),
-            // PhysicalBookScreen(),
-            // EBookScreen(),
-            // AudioBookScreen(),
+            PhysicalBookScreen(),
+            EbookScreen(),
+            AudioBookScreen(),
           ],
         ),
       ),
