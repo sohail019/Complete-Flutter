@@ -25,4 +25,10 @@ class AppImages {
   static String analyticsBottom = "lib/assets/images/analytics.png";
   static String shareBooks = "lib/assets/images/share_books.png";
   static String booksWorms = "lib/assets/images/books_worms.png";
+  static String backArrow = "lib/assets/images/left-arrow.png";
+  static String moreVertical = "lib/assets/images/more-vertical.png";
+  static String filter = "lib/assets/images/filter-icon-sm.png";
+  static String shelffilter = "lib/assets/images/shelf_filter.png";
+  static String gridfilter = "lib/assets/images/grid-filter.png";
+  static String listfilter = "lib/assets/images/list-filter.png";
 }
