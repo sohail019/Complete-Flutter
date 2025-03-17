@@ -6,6 +6,7 @@ import 'package:_08_boi_poka/components/custom_drawer.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/screens/carousel_screen/carousel_screen.dart';
+import 'package:_08_boi_poka/screens/home/home_screen.dart';
 import 'package:_08_boi_poka/screens/onboarding/lib_screen/data/lib_images.dart';
 import 'package:_08_boi_poka/screens/onboarding/lib_screen/widget/library_card_widget.dart';
 import 'package:auto_route/auto_route.dart';
@@ -167,7 +168,7 @@ class _LibScreenState extends State<LibScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CarouselScreen(),
+                              builder: (context) => HomeScreen(),
                             ),
                           );
                         },

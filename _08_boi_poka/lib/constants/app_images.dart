@@ -21,4 +21,8 @@ class AppImages {
   static String menuIcon = "lib/assets/icons/menu-icon.png";
   static String smLogo = "lib/assets/images/logo-sm.png";
   static String pokaLeftFacing = "lib/assets/images/poka-left-facing.png";
+  static String libraryBottom = "lib/assets/images/library.png";
+  static String analyticsBottom = "lib/assets/images/analytics.png";
+  static String shareBooks = "lib/assets/images/share_books.png";
+  static String booksWorms = "lib/assets/images/books_worms.png";
 }
