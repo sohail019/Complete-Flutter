@@ -7,8 +7,6 @@ import 'package:_08_boi_poka/providers/filter_provider/genre_provider.dart';
 import 'package:_08_boi_poka/providers/physical_books_provider/physical_books_provider.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/toggle_physical_view_provider.dart';
 import 'package:_08_boi_poka/screens/home/widgets/custom_filter_header_widget.dart';
-import 'package:_08_boi_poka/screens/home/widgets/custom_library_dropdown.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
