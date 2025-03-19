@@ -5,8 +5,8 @@ import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/providers/all_books_provider/all_books_provider.dart';
 import 'package:_08_boi_poka/providers/filter_provider/author_provider.dart';
 import 'package:_08_boi_poka/providers/filter_provider/genre_provider.dart';
-import 'package:_08_boi_poka/screens/home/all_screen/all_books_grid_screen.dart';
-import 'package:_08_boi_poka/screens/home/all_screen/all_books_list_view_screen.dart';
+import 'package:_08_boi_poka/screens/home/audio_book_screen/audio_books_grid_screen.dart';
+import 'package:_08_boi_poka/screens/home/audio_book_screen/audio_books_list_screen.dart';
 import 'package:_08_boi_poka/screens/home/audio_book_screen/audio_books_shelf_screen.dart';
 import 'package:_08_boi_poka/screens/home/audio_book_screen/toggle_audiobook_view_provider.dart';
 import 'package:_08_boi_poka/screens/home/widgets/custom_filter_header_widget.dart';
@@ -118,9 +118,9 @@ class AudioBookScreen extends ConsumerWidget {
                 (selectedTab == AudioBooksScreenEnum.shelf)
                     ? AudioBooksShelfScreen()
                     : selectedTab == AudioBooksScreenEnum.grid
-                    ? AllBooksGridViewScreen()
+                    ? AudioBooksGridViewScreen()
                     : selectedTab == AudioBooksScreenEnum.list
-                    ? AllBooksListViewScreen()
+                    ? AudioBooksListViewScreen()
                     : Container(),
           ),
         ],

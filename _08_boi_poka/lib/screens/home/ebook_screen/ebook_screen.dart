@@ -5,9 +5,9 @@ import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/providers/all_books_provider/all_books_provider.dart';
 import 'package:_08_boi_poka/providers/filter_provider/author_provider.dart';
 import 'package:_08_boi_poka/providers/filter_provider/genre_provider.dart';
-import 'package:_08_boi_poka/screens/home/all_screen/all_books_grid_screen.dart';
-import 'package:_08_boi_poka/screens/home/all_screen/all_books_list_view_screen.dart';
+import 'package:_08_boi_poka/screens/home/ebook_screen/ebook_grid_view_screen.dart';
 import 'package:_08_boi_poka/screens/home/ebook_screen/ebook_shelf_screen.dart';
+import 'package:_08_boi_poka/screens/home/ebook_screen/ebooks_list_screen.dart';
 import 'package:_08_boi_poka/screens/home/ebook_screen/toggle_ebook_view_provider.dart';
 import 'package:_08_boi_poka/screens/home/widgets/custom_filter_header_widget.dart';
 import 'package:auto_route/auto_route.dart';
@@ -115,9 +115,9 @@ class EbookScreen extends ConsumerWidget {
                 (selectedTab == EBookScreenEnum.shelf)
                     ? EBooksShelfScreen()
                     : selectedTab == EBookScreenEnum.grid
-                    ? AllBooksGridViewScreen()
+                    ? EBooksGridViewScreen()
                     : selectedTab == EBookScreenEnum.list
-                    ? AllBooksListViewScreen()
+                    ? EBooksListViewScreen()
                     : Container(),
           ),
         ],

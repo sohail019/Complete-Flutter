@@ -7,6 +7,8 @@ import 'package:_08_boi_poka/providers/filter_provider/genre_provider.dart';
 import 'package:_08_boi_poka/providers/physical_books_provider/physical_books_provider.dart';
 import 'package:_08_boi_poka/screens/home/all_screen/all_books_grid_screen.dart';
 import 'package:_08_boi_poka/screens/home/all_screen/all_books_list_view_screen.dart';
+import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_books_grid_view_screen.dart';
+import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_books_list_screen.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_books_shelf_screen.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/toggle_physical_view_provider.dart';
 import 'package:_08_boi_poka/screens/home/widgets/custom_filter_header_widget.dart';
@@ -128,9 +130,9 @@ class PhysicalBookScreen extends ConsumerWidget {
                 (selectedTab == PhysicalBooksScreenEnum.shelf)
                     ? PhysicalBooksShelfScreen()
                     : selectedTab == PhysicalBooksScreenEnum.grid
-                    ? AllBooksGridViewScreen()
+                    ? PhysicalBooksGridViewScreen()
                     : selectedTab == PhysicalBooksScreenEnum.list
-                    ? AllBooksListViewScreen()
+                    ? PhysicalBooksListViewScreen()
                     : Container(),
           ),
         ],
