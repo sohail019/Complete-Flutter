@@ -5,11 +5,15 @@ import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/providers/filter_provider/author_provider.dart';
 import 'package:_08_boi_poka/providers/filter_provider/genre_provider.dart';
 import 'package:_08_boi_poka/providers/physical_books_provider/physical_books_provider.dart';
+import 'package:_08_boi_poka/screens/home/all_screen/all_books_grid_screen.dart';
+import 'package:_08_boi_poka/screens/home/all_screen/all_books_list_view_screen.dart';
+import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_books_shelf_screen.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/toggle_physical_view_provider.dart';
 import 'package:_08_boi_poka/screens/home/widgets/custom_filter_header_widget.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 @RoutePage()
 class PhysicalBookScreen extends ConsumerWidget {
@@ -48,7 +52,13 @@ class PhysicalBookScreen extends ConsumerWidget {
                   //   stateNotifierProvider: physicalBooksStateProvider,
                   //   selectedLibrary: selectedPhysicalLibrary,
                   // ),
-                  Text("Custom Library Dropdown comes here"),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.35,
+                    child: Text(
+                      "Custom Library Dropdown comes here",
+                      maxLines: 2,
+                    ),
+                  ),
                   Spacer(),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,8 +122,17 @@ class PhysicalBookScreen extends ConsumerWidget {
               );
             },
           ),
-          SizedBox(height: screenHeight * 0.03),
-          Expanded(child: Center(child: Text("Physical Book Screen"))),
+          SizedBox(height: 26.h),
+          Expanded(
+            child:
+                (selectedTab == PhysicalBooksScreenEnum.shelf)
+                    ? PhysicalBooksShelfScreen()
+                    : selectedTab == PhysicalBooksScreenEnum.grid
+                    ? AllBooksGridViewScreen()
+                    : selectedTab == PhysicalBooksScreenEnum.list
+                    ? AllBooksListViewScreen()
+                    : Container(),
+          ),
         ],
       ),
     );

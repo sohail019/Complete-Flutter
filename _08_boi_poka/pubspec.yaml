@@ -51,6 +51,8 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   infinite_scroll_pagination: ^5.0.0
   skeletonizer: ^1.4.3
+  animate_do: ^4.2.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +81,7 @@ flutter:
   assets:
     - lib/assets/gif/
     - lib/assets/images/
+    - lib/assets/images/books/
     - lib/assets/icons/
     - lib/assets/icons/genres/
     - lib/assets/icons/library/
