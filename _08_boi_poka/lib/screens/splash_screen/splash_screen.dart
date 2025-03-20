@@ -1,4 +1,5 @@
 import 'package:_08_boi_poka/constants/app_images.dart';
+import 'package:_08_boi_poka/screens/analytics_screen/analytics_screen.dart';
 import 'package:_08_boi_poka/screens/carousel_screen/carousel_screen.dart';
 import 'package:_08_boi_poka/screens/home/main_tab_view/main_tab_view_screen.dart';
 import 'package:auto_route/auto_route.dart';
@@ -50,8 +51,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                // builder: (context) => CarouselScreen(),
-                                builder: (context) => MainTabViewScreen(),
+                                builder: (context) => CarouselScreen(),
+                                // builder: (context) => AnalyticsScreen(),
                               ),
                             );
                           },

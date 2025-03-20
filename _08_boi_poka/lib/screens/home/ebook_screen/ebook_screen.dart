@@ -37,7 +37,7 @@ class EbookScreen extends ConsumerWidget {
                       selectedGenreFilter.isNotEmpty) ||
                   (selectedAuthorFilter != null &&
                       selectedAuthorFilter.isNotEmpty);
-              final toggleFilterButton = ref.watch(ebookFilterToggleProvider);
+              // final toggleFilterButton = ref.watch(ebookFilterToggleProvider);
 
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.end,

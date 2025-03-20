@@ -1,5 +1,4 @@
 import 'package:_08_boi_poka/components/views/books_list_view.dart';
-import 'package:_08_boi_poka/data/list_book_data.dart';
 import 'package:_08_boi_poka/data/physical_books_data.dart';
 import 'package:flutter/material.dart';
 
