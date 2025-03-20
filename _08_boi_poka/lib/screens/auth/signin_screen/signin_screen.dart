@@ -3,6 +3,7 @@ import 'package:_08_boi_poka/components/custom_textfield_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
+import 'package:_08_boi_poka/controller/auth_remote_controller.dart';
 import 'package:_08_boi_poka/screens/auth/signup_screen/signup_screen.dart';
 import 'package:_08_boi_poka/screens/auth/widgets/common_page_header_widget.dart';
 import 'package:_08_boi_poka/screens/set_pattern_screen/set_pattern_screen.dart';
@@ -13,22 +14,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 @RoutePage()
-class SigninScreen extends StatefulWidget {
+class SigninScreen extends ConsumerStatefulWidget {
   final String? errorMessage;
   final bool isLogout;
   const SigninScreen({super.key, this.errorMessage, this.isLogout = false});
 
   @override
-  State<SigninScreen> createState() => _SigninScreenState();
+  _SigninScreenState createState() => _SigninScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen> {
+class _SigninScreenState extends ConsumerState<SigninScreen> {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final mobileRegex = RegExp(r'^\d{10}$');
   final _emailAndMobileNumController = TextEditingController();
   final _passwordController = TextEditingController();
-  // final AuthRemoteController _authRemoteController = AuthRemoteController();
+  final AuthRemoteController _authRemoteController = AuthRemoteController();
   final container = ProviderContainer();
 
   @override
@@ -129,7 +130,56 @@ class _SigninScreenState extends State<SigninScreen> {
               Padding(
                 padding: EdgeInsets.only(left: 60.w, right: 60.w),
                 child: AdaptiveButtonWidget(
-                  onTap: () {},
+                  disabled:
+                      _emailAndMobileNumController.text.trim().isEmpty ||
+                      _passwordController.text.trim().isEmpty,
+                  onTap: () async {
+                    if (_passwordController.text.trim().isNotEmpty &&
+                        _emailAndMobileNumController.text.trim().isNotEmpty) {
+                      if (_formKey.currentState!.validate()) {
+                        var value = await _authRemoteController
+                            .loginWithPhoneNumber(
+                              phoneNum:
+                                  _emailAndMobileNumController.text.trim(),
+                              password: _passwordController.text.trim(),
+                              context: context,
+                              ref: ref,
+                            );
+                        if (value.statusCode == 200 ||
+                            value.statusCode == 201) {
+                          // Show success SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Login Successful! Redirecting to Set Pattern screen...',
+                              ),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+
+                          // Wait for SnackBar to finish before navigating
+                          await Future.delayed(Duration(seconds: 2));
+
+                          // Navigate to the SetPatternScreen
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SetPatternScreen(),
+                            ),
+                          );
+                        } else {
+                          // Handle failed login (status code not 200 or 201)
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Login Failed! Please try again.'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
+                    }
+                  },
+
                   iconImg: AppImages.registerIcon,
                   title: "Sign in",
                 ),

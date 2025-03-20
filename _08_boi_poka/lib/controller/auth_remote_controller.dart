@@ -28,6 +28,21 @@ class AuthRemoteController {
     return mapData;
   }
 
+  Future<ResponseModel> loginWithPhoneNumber({
+    required String phoneNum,
+    required String password,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    ResponseModel data = await _authRemoteDatasource.loginWithPhoneNumber(
+      phoneNum: phoneNum,
+      password: password,
+      context: context,
+    );
+
+    return data;
+  }
+
   Future<void> storeAuthData(
     ResponseModel mapData,
     WidgetRef ref,

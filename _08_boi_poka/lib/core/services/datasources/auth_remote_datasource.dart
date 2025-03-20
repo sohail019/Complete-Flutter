@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +11,6 @@ class AuthRemoteDatasource {
     required String password,
     required BuildContext context,
   }) async {
-    log("Hello b4");
     ResponseModel data = await apiUtils.postApi(
       baseUrl: apiUtils.dio.options.baseUrl,
       endPoint: "/api/user/register",
@@ -25,7 +22,20 @@ class AuthRemoteDatasource {
         "userType": "User",
       },
     );
-    log("Register response: $data");
+    return data;
+  }
+
+  Future<ResponseModel> loginWithPhoneNumber({
+    required String phoneNum,
+    required String password,
+    required BuildContext context,
+  }) async {
+    ResponseModel data = await apiUtils.postApi(
+      baseUrl: apiUtils.dio.options.baseUrl,
+      endPoint: "/api/user/login",
+      data: {"mobileNumber": phoneNum, "password": password},
+    );
+
     return data;
   }
 }

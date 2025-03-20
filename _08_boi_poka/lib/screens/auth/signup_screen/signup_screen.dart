@@ -140,9 +140,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                                 ),
                                 (route) => true,
                               );
+
+                              // Show success SnackBar
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("Registered Successfully"),
+                                  content: Text("Registered Successfully!"),
+                                  backgroundColor: Colors.green,
                                 ),
                               );
 
@@ -150,6 +153,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                             }
                           } catch (e) {
                             context.loaderOverlay.hide();
+                            // Show error SnackBar
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Registration failed. Please try again.',
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
                           }
                         }
                       },
