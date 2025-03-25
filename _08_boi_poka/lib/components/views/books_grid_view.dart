@@ -31,7 +31,7 @@ class BooksGridView extends StatelessWidget {
             child: Column(
               children: [
                 CustomNetworkImage(imageUrl: book["coverImage"]),
-                SizedBox(height: 5),
+                SizedBox(height: 2),
                 Text(
                   book["title"],
                   style: TextStyle(fontWeight: FontWeight.bold),

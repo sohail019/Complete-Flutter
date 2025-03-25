@@ -1,11 +1,12 @@
-import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
-import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
-import 'package:_08_boi_poka/screens/auth/signup_screen/signup_screen.dart';
+import 'package:_08_boi_poka/core/utils/session_manager.dart';
+import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:_08_boi_poka/components/adaptive_button.dart';
+import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 @RoutePage()
@@ -20,6 +21,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
   final scaffolKey = GlobalKey<ScaffoldState>();
 
   bool isLoading = true;
+  int _currentIndex = 0;
 
   final List<Map<String, dynamic>> carouselItems = [
     {
@@ -49,7 +51,6 @@ class _CarouselScreenState extends State<CarouselScreen> {
     },
   ];
 
-  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     final isTablet =
@@ -179,7 +180,6 @@ class _CarouselScreenState extends State<CarouselScreen> {
                                     SizedBox(
                                       width: screenWidth * 0.75,
                                       height: screenHeight * 0.2,
-
                                       child: FittedBox(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
@@ -217,11 +217,9 @@ class _CarouselScreenState extends State<CarouselScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.w),
                   child: AdaptiveButtonWidget(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignupScreen()),
-                      );
+                    onTap: () async {
+                      await SessionManager.saveLastScreen('/carousel');
+                      context.pushRoute(SignupRoute());
                     },
                     disabled: false,
                     title: "Skip",

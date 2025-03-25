@@ -3,11 +3,15 @@ import 'dart:io';
 import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
+import 'package:_08_boi_poka/core/utils/session_manager.dart';
+import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/screens/onboarding/genre_screen/genre_screen.dart';
 import 'package:_08_boi_poka/screens/set_pattern_screen/widgets/custom_image_with_border.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+@RoutePage()
 class SetPatternScreen extends StatefulWidget {
   const SetPatternScreen({super.key});
 
@@ -156,11 +160,9 @@ class _SetPatternScreenState extends State<SetPatternScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 95.w),
                   child: AdaptiveButtonWidget(
                     disabled: false,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => GenreScreen()),
-                      );
+                    onTap: () async {
+                      await SessionManager.saveLastScreen('/genre');
+                      context.pushRoute(GenreRoute());
                     },
                     title: 'allow',
                     iconImg: AppImages.allowIcon,

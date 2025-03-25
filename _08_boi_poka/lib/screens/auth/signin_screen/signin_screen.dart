@@ -4,9 +4,10 @@ import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/controller/auth_remote_controller.dart';
-import 'package:_08_boi_poka/screens/auth/signup_screen/signup_screen.dart';
+import 'package:_08_boi_poka/controller/google_login_controller.dart';
+import 'package:_08_boi_poka/core/utils/session_manager.dart';
+import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/screens/auth/widgets/common_page_header_widget.dart';
-import 'package:_08_boi_poka/screens/set_pattern_screen/set_pattern_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,20 +18,22 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 class SigninScreen extends ConsumerStatefulWidget {
   final String? errorMessage;
   final bool isLogout;
+
   const SigninScreen({super.key, this.errorMessage, this.isLogout = false});
 
   @override
-  _SigninScreenState createState() => _SigninScreenState();
+  SigninScreenState createState() => SigninScreenState();
 }
 
-class _SigninScreenState extends ConsumerState<SigninScreen> {
+class SigninScreenState extends ConsumerState<SigninScreen> {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final mobileRegex = RegExp(r'^\d{10}$');
   final _emailAndMobileNumController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final _googleLoginController = GoogleLoginController();
   final AuthRemoteController _authRemoteController = AuthRemoteController();
-  final container = ProviderContainer();
 
   @override
   void dispose() {
@@ -65,6 +68,7 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CommonPageHeaderWidget(title: "Sign in to \nBoiPoka"),
+
               Padding(
                 padding: EdgeInsets.only(
                   top: 52.h,
@@ -104,12 +108,8 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                       children: [
                         AdaptiveButtonWidget(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SetPatternScreen(),
-                              ),
-                            );
+                            context.pushRoute(SetPatternRoute());
+                            SessionManager.saveLastScreen('/set-pattern');
                           },
                           title: "set pattern?",
                           disabled: false,
@@ -127,16 +127,22 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                 ),
               ),
               SizedBox(height: 24.h),
+
+              // Sign In Button
               Padding(
                 padding: EdgeInsets.only(left: 60.w, right: 60.w),
                 child: AdaptiveButtonWidget(
                   disabled:
                       _emailAndMobileNumController.text.trim().isEmpty ||
-                      _passwordController.text.trim().isEmpty,
+                      _passwordController.text.trim().isEmpty ||
+                      isLoading,
                   onTap: () async {
                     if (_passwordController.text.trim().isNotEmpty &&
                         _emailAndMobileNumController.text.trim().isNotEmpty) {
                       if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          isLoading = true; // Set loading state
+                        });
                         var value = await _authRemoteController
                             .loginWithPhoneNumber(
                               phoneNum:
@@ -145,9 +151,12 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                               context: context,
                               ref: ref,
                             );
+                        setState(() {
+                          isLoading = false; // Reset loading state
+                        });
+
                         if (value.statusCode == 200 ||
                             value.statusCode == 201) {
-                          // Show success SnackBar
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
@@ -160,15 +169,9 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                           // Wait for SnackBar to finish before navigating
                           await Future.delayed(Duration(seconds: 2));
 
-                          // Navigate to the SetPatternScreen
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SetPatternScreen(),
-                            ),
-                          );
+                          context.pushRoute(SetPatternRoute());
+                          SessionManager.saveLastScreen('/set-pattern');
                         } else {
-                          // Handle failed login (status code not 200 or 201)
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Login Failed! Please try again.'),
@@ -179,12 +182,12 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                       }
                     }
                   },
-
                   iconImg: AppImages.registerIcon,
                   title: "Sign in",
                 ),
               ),
               SizedBox(height: 20.h),
+
               Padding(
                 padding: EdgeInsets.only(left: 60.w, right: 60.w),
                 child: Row(
@@ -196,12 +199,8 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                     SizedBox(width: 5.w),
                     AdaptiveButtonWidget(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignupScreen(),
-                          ),
-                        );
+                        context.pushRoute(SignupRoute());
+                        SessionManager.saveLastScreen('/signup');
                       },
                       title: "register",
                       disabled: false,
@@ -212,12 +211,12 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                 ),
               ),
               SizedBox(height: 24.h),
+
               Padding(
                 padding: EdgeInsets.only(left: 60.w, right: 60.w),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
                       "or signin with",
@@ -227,7 +226,12 @@ class _SigninScreenState extends ConsumerState<SigninScreen> {
                     Row(
                       children: [
                         AdaptiveButtonWidget(
-                          onTap: () {},
+                          onTap: () {
+                            _googleLoginController.signInWithGoogle(
+                              context,
+                              ref,
+                            );
+                          },
                           backgroundImage: AppImages.backgroundEllipseImage,
                           overlayImage: AppImages.googleIcon,
                         ),

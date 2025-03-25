@@ -3,6 +3,8 @@ import 'package:_08_boi_poka/components/custom_slider_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
+import 'package:_08_boi_poka/core/utils/session_manager.dart';
+import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/screens/onboarding/lib_screen/lib_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -120,11 +122,9 @@ class _ScaleScreenState extends State<ScaleScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 45.w),
                 child: AdaptiveButtonWidget(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LibScreen()),
-                    );
+                  onTap: () async {
+                    await SessionManager.saveLastScreen('/library');
+                    context.pushRoute(LibRoute());
                   },
                   title: "next",
                   disabled: false,

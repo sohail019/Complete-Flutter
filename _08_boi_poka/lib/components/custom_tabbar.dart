@@ -21,10 +21,10 @@ class CustomTabbar extends StatelessWidget {
         View.of(context).physicalSize.shortestSide /
             View.of(context).devicePixelRatio >=
         680;
-    var orientation = MediaQuery.of(context).orientation;
+    // var orientation = MediaQuery.of(context).orientation;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final isPortrait = orientation == Orientation.portrait;
+    // final isPortrait = orientation == Orientation.portrait;
 
     // final double tabLabelPadding = 10;
     final Color indicatorColor = AppColors.primaryColor;
@@ -90,13 +90,10 @@ class _CustomUnderlinePainter extends BoxPainter {
   final double width;
   final double height;
   final Color color;
-  final double spacing;
-
   _CustomUnderlinePainter({
     required this.width,
     required this.height,
-    required this.color, // Default spacing value
-    this.spacing = 6.0,
+    required this.color,
   });
 
   @override
@@ -106,9 +103,7 @@ class _CustomUnderlinePainter extends BoxPainter {
     //     (width / 2); // Center the indicator
     final double startX = offset.dx + 0; // Align indicator to the start
 
-    final double startY =
-        offset.dy + configuration.size!.height - height + spacing;
-
+    final double startY = offset.dy + configuration.size!.height - height;
     final Paint paint =
         Paint()
           ..color = color

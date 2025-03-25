@@ -5,9 +5,11 @@ import 'package:_08_boi_poka/screens/home/all_screen/all_screen.dart';
 import 'package:_08_boi_poka/screens/home/audio_book_screen/audio_book_screen.dart';
 import 'package:_08_boi_poka/screens/home/ebook_screen/ebook_screen.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_book_screen.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+@RoutePage()
 class MainTabViewScreen extends StatefulWidget {
   final bool? showAppBar;
   final String? title;

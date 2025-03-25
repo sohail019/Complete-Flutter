@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 class AnalyticsModel {
   final String? message;
   final AnalyticsData? data;

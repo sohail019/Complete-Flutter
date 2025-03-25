@@ -31,4 +31,6 @@ class AppImages {
   static String shelffilter = "lib/assets/images/shelf_filter.png";
   static String gridfilter = "lib/assets/images/grid-filter.png";
   static String listfilter = "lib/assets/images/list-filter.png";
+  static String closeIcon = "lib/assets/images/close.png";
+  static String moreIconHorizontal = "lib/assets/images/more_horizontal.png";
 }

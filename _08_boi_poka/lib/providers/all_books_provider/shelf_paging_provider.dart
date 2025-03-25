@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ShelfPagingProvider
     extends StateNotifier<AsyncValue<List<Map<String, dynamic>>?>> {

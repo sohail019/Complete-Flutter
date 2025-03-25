@@ -2,6 +2,8 @@ import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
+import 'package:_08_boi_poka/core/utils/session_manager.dart';
+import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/screens/onboarding/genre_screen/data/genre_images.dart';
 import 'package:_08_boi_poka/screens/onboarding/genre_screen/widgets/genre_widget.dart';
 import 'package:_08_boi_poka/screens/onboarding/scale_screen/scale_screen.dart';
@@ -159,12 +161,9 @@ class _GenreScreenState extends State<GenreScreen> {
                   child: AdaptiveButtonWidget(
                     disabled: false,
                     selectedGenreLen: selectedGenre.length,
-                    onTap: () {
-                      //? select genre logic will come here
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ScaleScreen()),
-                      );
+                    onTap: () async {
+                      await SessionManager.saveLastScreen('/scale');
+                      context.pushRoute(ScaleRoute());
                     },
                     title: "next",
                     iconImg: AppImages.nextIcon,

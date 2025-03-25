@@ -4,8 +4,10 @@ import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/controller/auth_remote_controller.dart';
+import 'package:_08_boi_poka/controller/google_login_controller.dart';
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
-import 'package:_08_boi_poka/screens/auth/signin_screen/signin_screen.dart';
+import 'package:_08_boi_poka/core/utils/session_manager.dart';
+import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/screens/auth/widgets/common_page_header_widget.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +21,17 @@ class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  SignupScreenState createState() => SignupScreenState();
 }
 
-class _SignupScreenState extends ConsumerState<SignupScreen> {
+class SignupScreenState extends ConsumerState<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneNumController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final _googleLoginController = GoogleLoginController();
 
   bool isFormValid() {
     return _nameController.text.trim().isNotEmpty &&
@@ -100,7 +104,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ],
                       isObscure: true,
                     ),
-                    // SizedBox(height: 10.h),
                   ],
                 ),
               ),
@@ -133,27 +136,20 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
                             if (responseModel.statusCode == 200 ||
                                 responseModel.statusCode == 201) {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SigninScreen(),
-                                ),
-                                (route) => true,
-                              );
+                              await SessionManager.saveLastScreen('/signin');
 
-                              // Show success SnackBar
+                              // Navigate to the Signin screen
+                              context.pushRoute(SigninRoute());
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text("Registered Successfully!"),
                                   backgroundColor: Colors.green,
                                 ),
                               );
-
-                              // todo: referralConsentDialogView comes here
                             }
                           } catch (e) {
                             context.loaderOverlay.hide();
-                            // Show error SnackBar
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -186,12 +182,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     SizedBox(width: 5.w),
                     AdaptiveButtonWidget(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SigninScreen(),
-                          ),
-                        );
+                        context.pushRoute(SigninRoute());
+                        SessionManager.saveLastScreen('/signup');
                       },
                       title: 'Sign In',
                       disabled: false,
@@ -217,7 +209,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     Row(
                       children: [
                         AdaptiveButtonWidget(
-                          onTap: () {},
+                          onTap: () {
+                            _googleLoginController.signInWithGoogle(
+                              context,
+                              ref,
+                            );
+                          },
                           backgroundImage: AppImages.backgroundEllipseImage,
                           overlayImage: AppImages.googleIcon,
                         ),

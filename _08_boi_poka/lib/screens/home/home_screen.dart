@@ -20,48 +20,45 @@ class HomeScreen extends ConsumerWidget {
         View.of(context).physicalSize.shortestSide /
             View.of(context).devicePixelRatio >=
         680;
-    // var orientation = MediaQuery.of(context).orientation;
     final screenHeight = MediaQuery.of(context).size.height;
+
     int selectedIndex = ref.watch(selectedIndexHomeProvider);
     List<Widget> screens = ref.watch(homeScreenTabsProvider);
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {},
-      child: Scaffold(
-        key: scaffoldKey,
-        appBar:
-            isTablet
-                ? PreferredSize(
-                  preferredSize: Size.fromHeight(screenHeight * 0.1),
-                  child: CommonAppbar(
-                    drawerFunction: () {
-                      scaffoldKey.currentState?.openDrawer();
-                    },
-                  ),
-                )
-                : CommonAppbar(
-                  drawerFunction: () => scaffoldKey.currentState?.openDrawer(),
+
+    return Scaffold(
+      key: scaffoldKey,
+      appBar:
+          isTablet
+              ? PreferredSize(
+                preferredSize: Size.fromHeight(screenHeight * 0.1),
+                child: CommonAppbar(
+                  drawerFunction: () {
+                    scaffoldKey.currentState?.openDrawer();
+                  },
                 ),
-        drawer: CustomDrawer(),
-        backgroundColor: AppColors.secondaryColor,
-        body: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: screens[selectedIndex],
+              )
+              : CommonAppbar(
+                drawerFunction: () => scaffoldKey.currentState?.openDrawer(),
+              ),
+      drawer: const CustomDrawer(),
+      backgroundColor: AppColors.secondaryColor,
+      body: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        bottomNavigationBar: CustomBottomNav(
-          items: [
-            {'iconimg': AppImages.libraryBottom, 'label': 'Library'},
-            {'iconimg': AppImages.analyticsBottom, 'label': 'Analytics'},
-            {'iconimg': AppImages.shareBooks, 'label': 'Share books'},
-            {'iconimg': AppImages.booksWorms, 'label': 'BooksWorms'},
-          ],
-          selectedIndex: selectedIndex,
-          onTabSelected: (int index) {
-            ref.read(selectedIndexHomeProvider.notifier).state = index;
-          },
-        ),
+        child: screens[selectedIndex], // This shows the selected tab
+      ),
+      bottomNavigationBar: CustomBottomNav(
+        items: [
+          {'iconimg': AppImages.libraryBottom, 'label': 'Library'},
+          {'iconimg': AppImages.analyticsBottom, 'label': 'Analytics'},
+          {'iconimg': AppImages.shareBooks, 'label': 'Stock Chart'},
+          {'iconimg': AppImages.booksWorms, 'label': 'BooksWorms'},
+        ],
+        selectedIndex: selectedIndex,
+        onTabSelected: (int index) {
+          ref.read(selectedIndexHomeProvider.notifier).state = index;
+        },
       ),
     );
   }

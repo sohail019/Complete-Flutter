@@ -1,5 +1,4 @@
 import 'package:_08_boi_poka/models/book_state.dart';
-import 'package:_08_boi_poka/models/get_all_books_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AllBooksNotifier extends StateNotifier<BooksState> {

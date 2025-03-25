@@ -1,7 +1,8 @@
 import 'package:_08_boi_poka/constants/app_images.dart';
-import 'package:_08_boi_poka/screens/analytics_screen/analytics_screen.dart';
+import 'package:_08_boi_poka/core/utils/session_manager.dart';
+import 'package:_08_boi_poka/navigation/app_router.gr.dart';
+import 'package:_08_boi_poka/screens/auth/signup_screen/signup_screen.dart';
 import 'package:_08_boi_poka/screens/carousel_screen/carousel_screen.dart';
-import 'package:_08_boi_poka/screens/home/main_tab_view/main_tab_view_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +15,40 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Widget selectedScreen = Container();
+
+  String? _initialRoute;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _loadInitialRoute();
+    // _navigateToNextScreen();
   }
+
+  Future<void> _loadInitialRoute() async {
+    String? lastScreen = await SessionManager.getLastScreen();
+    setState(() {
+      _initialRoute = lastScreen;
+      switch (lastScreen) {
+        case "/carousel":
+          selectedScreen = CarouselScreen();
+          break;
+        case "/signup":
+          selectedScreen = SignupScreen();
+          break;
+      }
+    });
+  }
+
+  // // Function to handle navigation directly based on session
+  // void _navigateToNextScreen() async {
+  //   // Save the current screen to session before navigating
+  //   await SessionManager.saveLastScreen('/splash');
+
+  //   // Navigate to the next screen
+  //   context.pushRoute(CarouselRoute()); // Or another route as needed
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CarouselScreen(),
-                                // builder: (context) => AnalyticsScreen(),
-                              ),
-                            );
+                            context.pushRoute(CarouselRoute());
                           },
                           icon: const Icon(Icons.arrow_forward),
                           label: const Text('Go to Carousel Screen'),

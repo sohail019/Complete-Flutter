@@ -1,4 +1,5 @@
 import 'package:_08_boi_poka/constants/app_colors.dart';
+import 'package:_08_boi_poka/core/utils/session_manager.dart';
 import 'package:_08_boi_poka/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,39 +8,51 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
-Future<void> main() async {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-
-  runApp(ProviderScope(child: MyApp()));
+  await Firebase.initializeApp();
+  await SessionManager.init();
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  final appRoute = AppRouter();
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-  MyApp({super.key});
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AppRouter _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    // Initialize ScreenUtil with design size for responsive layouts
     return ScreenUtilInit(
       designSize: const Size(375, 667),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
+        // If initial route is not loaded yet, show a loading indicator
+        // if (_initialRoute == null) {
+        //   return const MaterialApp(
+        //     home: Scaffold(body: Center(child: CircularProgressIndicator())),
+        //   );
+        // }
+
         return PlatformApp.router(
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
-          routerConfig: appRoute.config(), // Set the router configuration
-          color: AppColors.secondaryColor, // App's secondary color
-
+          routerConfig: _appRouter.config(),
+          color: AppColors.secondaryColor,
           material: (context, platform) {
             return MaterialAppRouterData(
               color: AppColors.secondaryColor,
-              scaffoldMessengerKey:
-                  scaffoldMessengerKey, // Setup scaffold messenger
+              scaffoldMessengerKey: scaffoldMessengerKey,
               theme: ThemeData(
                 canvasColor: AppColors.secondaryColor,
                 scaffoldBackgroundColor: AppColors.secondaryColor,
@@ -51,9 +64,7 @@ class MyApp extends StatelessWidget {
               ),
             );
           },
-
           builder: (context, widget) {
-            // Wrap the app with a LoaderOverlay to show loading indicator
             return LoaderOverlay(
               overlayWidgetBuilder: (_) {
                 return Center(

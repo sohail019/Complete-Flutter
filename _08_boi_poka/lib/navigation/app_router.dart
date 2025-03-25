@@ -1,7 +1,7 @@
 import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 
-@AutoRouterConfig(replaceInRouteName: 'Screen|Page,Route')
+@AutoRouterConfig()
 class AppRouter extends RootStackRouter {
   @override
   RouteType get defaultRouteType => RouteType.custom(
@@ -14,6 +14,19 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: CarouselRoute.page, initial: false),
     AutoRoute(page: SignupRoute.page, initial: false),
     AutoRoute(page: SigninRoute.page, initial: false),
-    AutoRoute(page: FilterRoute.page),
+    AutoRoute(page: FilterRoute.page, initial: false),
+    AutoRoute(page: SetPatternRoute.page, initial: false),
+    AutoRoute(page: GenreRoute.page, initial: false),
+    AutoRoute(page: ScaleRoute.page, initial: false),
+    AutoRoute(page: HomeRoute.page, initial: false),
+    AutoRoute(page: AnalyticsRoute.page, initial: false),
+    AutoRoute(page: LibRoute.page, initial: false),
+    AutoRoute(page: StockChartRoute.page, initial: false),
   ];
+
+  // // Method to asynchronously fetch the initial route
+  // Future<String> getInitialRoute() async {
+  //   return await SessionManager.getLastScreen() ??
+  //       '/splash'; // Default to splash if not available
+  // }
 }

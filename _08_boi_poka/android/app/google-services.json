@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "359620272504",
+    "project_id": "boipoka-f8ec7",
+    "storage_bucket": "boipoka-f8ec7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359620272504:android:15107fdab087ecfce3688d",
+        "android_client_info": {
+          "package_name": "com.example.u_08_boi_poka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359620272504-pghpuu316m40gck4pp85vs733o7kir8b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.u_08_boi_poka",
+            "certificate_hash": "7810ef013f29d9d6eb0f8b31afac8de0c091fc91"
+          }
+        },
+        {
+          "client_id": "359620272504-rr2onst0t6pqn64r8ohqdgq4nepfsglm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHSoJfYKsqEy374iPoTiZkIei8gcN5p78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359620272504-rr2onst0t6pqn64r8ohqdgq4nepfsglm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
