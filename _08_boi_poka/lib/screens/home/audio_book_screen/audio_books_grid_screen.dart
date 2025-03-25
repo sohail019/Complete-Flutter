@@ -7,6 +7,6 @@ class AudioBooksGridViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BooksGridView(books: audioBooksGridAndListData));
+    return Scaffold(body: Text("Audio Books Grid View"));
   }
 }

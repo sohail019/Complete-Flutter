@@ -1,10 +1,11 @@
 import 'package:_08_boi_poka/components/custom_network_image.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
+import 'package:_08_boi_poka/models/get_all_books_model.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class BooksListView extends StatelessWidget {
-  final List<dynamic> books;
+  final List<BookData> books;
 
   const BooksListView({super.key, required this.books});
 
@@ -28,7 +29,7 @@ class BooksListView extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomNetworkImage(imageUrl: book['coverImage']),
+                  CustomNetworkImage(imageUrl: book.bookDetails?.coverImage),
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Column(
@@ -37,7 +38,7 @@ class BooksListView extends StatelessWidget {
                         SizedBox(
                           width: screenWidth * 0.5,
                           child: Text(
-                            book["title"],
+                            book.bookDetails?.title ?? "",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: AppTypography.title20PrimaryTextBold,
@@ -47,7 +48,7 @@ class BooksListView extends StatelessWidget {
                         SizedBox(
                           width: screenWidth * 0.5,
                           child: Text(
-                            book["author"].join(", "),
+                            book.bookDetails?.author?.join(", ") ?? "",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: AppTypography.typo12PrimaryTextRegular,
@@ -57,7 +58,7 @@ class BooksListView extends StatelessWidget {
                         SizedBox(
                           width: screenWidth * 0.5,
                           child: Text(
-                            book["description"],
+                            book.bookDetails?.genre?.join(", ") ?? "",
                             style: AppTypography.typo12PrimaryTextLight,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

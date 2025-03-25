@@ -1,9 +1,10 @@
 import 'package:_08_boi_poka/components/custom_network_image.dart';
+import 'package:_08_boi_poka/models/get_all_books_model.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class BooksGridView extends StatelessWidget {
-  final List<dynamic> books;
+  final List<BookData> books;
 
   const BooksGridView({super.key, required this.books});
 
@@ -30,19 +31,19 @@ class BooksGridView extends StatelessWidget {
             onTap: () {},
             child: Column(
               children: [
-                CustomNetworkImage(imageUrl: book["coverImage"]),
-                SizedBox(height: 2),
-                Text(
-                  book["title"],
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  book["author"].join(", "),
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                  textAlign: TextAlign.center,
-                ),
+                CustomNetworkImage(imageUrl: book.bookDetails?.coverImage),
+                // SizedBox(height: 2),
+                // Text(
+                //   book.bookDetails?.title ?? "",
+                //   style: TextStyle(fontWeight: FontWeight.bold),
+                //   textAlign: TextAlign.center,
+                //   overflow: TextOverflow.ellipsis,
+                // ),
+                // Text(
+                //   book.bookDetails?.author?.join(", ") ?? "",
+                //   style: TextStyle(color: Colors.grey, fontSize: 12),
+                //   textAlign: TextAlign.center,
+                // ),
               ],
             ),
           ),

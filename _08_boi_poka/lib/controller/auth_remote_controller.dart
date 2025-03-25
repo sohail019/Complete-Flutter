@@ -1,3 +1,4 @@
+import 'package:_08_boi_poka/controller/secure_storage_controller.dart';
 import 'package:_08_boi_poka/core/services/datasources/auth_remote_datasource.dart';
 import 'package:_08_boi_poka/core/services/datasources/shared_preference_impl.dart';
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
@@ -6,7 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthRemoteController {
   final AuthRemoteDatasource _authRemoteDatasource = AuthRemoteDatasource();
-
+  final SecureStorageController _secureStorageController =
+      SecureStorageController();
   final SharedPrefController sharedPref = SharedPrefController();
 
   Future<ResponseModel> register({
@@ -39,8 +41,12 @@ class AuthRemoteController {
       password: password,
       context: context,
     );
-
+    storeAuthData(data.response, ref, true);
     return data;
+  }
+
+  Future<ResponseModel?> getNewToken({required String refreshToken}) async {
+    return await _authRemoteDatasource.getNewToken(refreshToken: refreshToken);
   }
 
   Future<void> storeAuthData(
@@ -49,10 +55,33 @@ class AuthRemoteController {
     bool isLogin,
   ) async {
     sharedPref.storeBool("isLogin", true);
+    await _secureStorageController.storeSecureData(
+      key: "jwtToken",
+      value: mapData.response["data"]["token"],
+    );
+
+    await _secureStorageController.storeSecureData(
+      key: "refreshToken",
+      value: mapData.response["data"]["refreshToken"],
+    );
+
+    await _secureStorageController.storeSecureData(
+      key: "tokenExpiryDate",
+      value: mapData.response["data"]["tokenExpiryDate"],
+    );
 
     await sharedPref.storeBool(
       "onBoarded",
       mapData.response["data"]["onBoarded"],
     );
+
+    await sharedPref.storeBool(
+      "isVerified",
+      mapData.response["data"]["isVerified"],
+    );
+
+    // if (isLogin) {
+    //   final library = ref.read(libraryProvider);
+    // }
   }
 }

@@ -7,6 +7,6 @@ class AllBooksGridViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BooksGridView(books: allBooksGridAndListData));
+    return Scaffold(body: Text("All Books Grid View"));
   }
 }

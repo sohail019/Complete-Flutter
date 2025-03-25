@@ -45,6 +45,7 @@ class BookData {
   String? addedAt;
   String? libraryName;
   int? libraryIndex;
+  // BookColorScheme? colorScheme;
 
   BookData({
     this.bookId,
@@ -61,6 +62,7 @@ class BookData {
     this.addedAt,
     this.libraryName,
     this.libraryIndex,
+    // this.colorScheme
   });
 
   factory BookData.fromJson(Map<String, dynamic> json) => BookData(
@@ -85,6 +87,9 @@ class BookData {
     addedAt: json['addedAt'],
     libraryName: json['libraryName'],
     libraryIndex: json['libraryIndex'],
+    // colorScheme: json['colorScheme'] != null ? BookColorScheme.fromJson(json['colorScheme'])
+    // : null,
+
     // row: json['row'],
     // column: json['column'],
   );
@@ -102,6 +107,7 @@ class BookData {
     'column': column,
     'libraryName': libraryName,
     "addedAt": addedAt,
+    // "colorScheme": colorScheme?.toJson()
   };
 }
 
@@ -146,6 +152,7 @@ class BookDetails {
   double? bookHeight;
   double? bookThickness;
   double? bookWidth;
+  BookColorScheme? bookColorScheme;
 
   BookDetails({
     this.id,
@@ -168,6 +175,7 @@ class BookDetails {
     this.bookHeight,
     this.bookThickness,
     this.bookWidth,
+    this.bookColorScheme,
   });
 
   factory BookDetails.fromJson(Map<String, dynamic> json) {
@@ -203,6 +211,10 @@ class BookDetails {
       bookHeight: double.parse(height.toString()),
       bookThickness: double.parse(bookThickness.toString()),
       bookWidth: double.parse(width.toString()),
+      bookColorScheme:
+          json['bookColorScheme'] != null
+              ? BookColorScheme.fromJson(json['bookColorScheme'])
+              : null,
     );
   }
 
@@ -227,5 +239,44 @@ class BookDetails {
     'bookHeight': bookHeight,
     'bookThickness': bookThickness,
     'bookWidth': bookWidth,
+    "bookColorScheme": bookColorScheme?.toJson(),
+  };
+}
+
+class BookColorScheme {
+  final String startColor;
+  final String middleColor;
+  final String endColor;
+  final String textColor;
+
+  const BookColorScheme({
+    required this.startColor,
+    required this.middleColor,
+    required this.endColor,
+    required this.textColor,
+  });
+
+  // Default BookColorScheme
+  static const BookColorScheme defaultScheme = BookColorScheme(
+    startColor: "#323131",
+    middleColor: "#777777",
+    endColor: "#0D0D0D",
+    textColor: "#FFFFFF",
+  );
+
+  factory BookColorScheme.fromJson(Map<String, dynamic> json) {
+    return BookColorScheme(
+      startColor: json['startColor'],
+      middleColor: json['middleColor'],
+      endColor: json['endColor'],
+      textColor: json['textColor'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'startColor': startColor,
+    'middleColor': middleColor,
+    'endColor': endColor,
+    'textColor': textColor,
   };
 }
