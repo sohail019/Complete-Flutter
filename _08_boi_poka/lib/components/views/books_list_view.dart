@@ -58,7 +58,7 @@ class BooksListView extends StatelessWidget {
                         SizedBox(
                           width: screenWidth * 0.5,
                           child: Text(
-                            book.bookDetails?.genre?.join(", ") ?? "",
+                            book.bookDetails?.description ?? "",
                             style: AppTypography.typo12PrimaryTextLight,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

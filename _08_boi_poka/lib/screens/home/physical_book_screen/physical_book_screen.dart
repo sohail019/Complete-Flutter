@@ -7,11 +7,13 @@ import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/providers/filter_provider/author_provider.dart';
 import 'package:_08_boi_poka/providers/filter_provider/genre_provider.dart';
 import 'package:_08_boi_poka/providers/physical_books_provider/physical_books_provider.dart';
+import 'package:_08_boi_poka/providers/physical_books_provider/physical_paging_controller.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_books_grid_view_screen.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_books_list_screen.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/physical_books_shelf_screen.dart';
 import 'package:_08_boi_poka/screens/home/physical_book_screen/toggle_physical_view_provider.dart';
 import 'package:_08_boi_poka/screens/home/widgets/custom_filter_header_widget.dart';
+import 'package:_08_boi_poka/screens/home/widgets/custom_library_dropdown.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,7 +51,7 @@ class PhysicalBookScreenState extends ConsumerState<PhysicalBookScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final selectedTab = ref.watch(togglePhysicalViewProvider);
     return isLoading
-        ? CircularProgressIndicator()
+        ? Center(child: CircularProgressIndicator())
         : Padding(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
           child: Column(
@@ -76,18 +78,34 @@ class PhysicalBookScreenState extends ConsumerState<PhysicalBookScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      //  CustomLibraryDropdown(
-                      //   ref: ref,
-                      //   stateNotifierProvider: physicalBooksStateProvider,
-                      //   selectedLibrary: selectedPhysicalLibrary,
-                      // ),
-                      SizedBox(
-                        width: MediaQuery.sizeOf(context).width * 0.35,
-                        child: Text(
-                          "Custom Library Dropdown comes here",
-                          maxLines: 2,
-                        ),
+                      CustomLibraryDropdown(
+                        ref: ref,
+                        stateNotifierProvider: physicalBooksStateProvider,
+                        selectedLibrary: selectedPhysicalLibrary,
+                        getBookData: (String libraryId) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          booksController
+                              .getAllBooks(
+                                bookType: "physicalBook",
+                                libraryId: libraryId,
+                              )
+                              .then((value) {
+                                allBooks = value.data ?? [];
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              });
+                        },
                       ),
+                      // SizedBox(
+                      //   width: MediaQuery.sizeOf(context).width * 0.35,
+                      //   child: Text(
+                      //     "Custom Library Dropdown comes here",
+                      //     maxLines: 2,
+                      //   ),
+                      // ),
                       Spacer(),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,19 +119,19 @@ class PhysicalBookScreenState extends ConsumerState<PhysicalBookScreen> {
                                   PageRouteInfo(
                                     AppRoutes.filter,
                                     args: FilterRouteArgs(
-                                      // listGridControllerProvider:
-                                      //     physicalPagingControllerProvider,
+                                      listGridControllerProvider:
+                                          physicalPagingControllerProvider,
                                       // shelfControllerProvider:
                                       //     physicalShelfPagingProvider,
                                       pageFilterToggleProvider:
                                           physicalFilterToggleProvider,
                                       stateNotifierProvider:
                                           physicalBooksStateProvider,
-                                      // libraryId:
-                                      //     ref.read(selectedPhysicalLibrary) ??
-                                      //         ""),
-                                      libraryId: "",
+                                      libraryId:
+                                          ref.read(selectedPhysicalLibrary) ??
+                                          "",
                                     ),
+                                    // libraryId: "",
                                   ),
                                 );
                               },

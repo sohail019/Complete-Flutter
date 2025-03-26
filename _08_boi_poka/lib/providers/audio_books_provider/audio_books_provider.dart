@@ -1,16 +1,17 @@
 import 'package:_08_boi_poka/controller/books_controller.dart';
 import 'package:_08_boi_poka/models/book_state.dart';
+import 'package:_08_boi_poka/providers/audio_books_provider/audio_paging_controller.dart';
+import 'package:_08_boi_poka/providers/audio_books_provider/audio_shelf_provider.dart';
 import 'package:_08_boi_poka/providers/friend_user_id_provider.dart/friend_user_id_provider.dart';
 import 'package:_08_boi_poka/providers/library_provider/get_all_library_provider.dart';
-import 'package:_08_boi_poka/providers/physical_books_provider/physical_paging_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:developer';
 
-class PhysicalBooksNotifier extends StateNotifier<BooksState> {
+class AudioBooksNotifier extends StateNotifier<BooksState> {
   Ref ref;
   Map<String, dynamic>? data;
-  PhysicalBooksNotifier(this.ref, this.data)
+  AudioBooksNotifier(this.ref, this.data)
     : super(BooksState(books: [], hasMore: true, page: 1));
 
   final booksController = BooksController();
@@ -35,7 +36,7 @@ class PhysicalBooksNotifier extends StateNotifier<BooksState> {
               ? await booksController.getMemberAllBook(
                 userId: friendUserId,
                 pageNo: state.page.toString(),
-                bookType: "physicalBook",
+                bookType: "audioBook",
                 sortType: data?['sortType'],
                 genres: data?['genres'],
                 libraryId: data?['libraryId'] ?? libraryId,
@@ -45,11 +46,11 @@ class PhysicalBooksNotifier extends StateNotifier<BooksState> {
               )
               : await booksController.getAllBooks(
                 pageNo: state.page.toString(),
-                bookType: "physicalBook",
-                sortType: data?['sortType'],
+                bookType: "audioBook",
                 genres: data?['genres'],
                 libraryId: data?['libraryId'] ?? libraryId,
                 authors: data?['authors'],
+                sortType: data?['sortType'],
                 sortBy: data?['sortBy'] ?? "createdAt",
                 searchTitle: data?['searchTitle'],
               );
@@ -59,41 +60,41 @@ class PhysicalBooksNotifier extends StateNotifier<BooksState> {
 
       if (isLastPage) {
         ref
-            .read(physicalPagingControllerProvider)
+            .read(audioPagingControllerProvider)
             .appendLastPage(newBooks.data ?? []);
+        // final value = mapShelfData(newBooks.data);
         // final cloneData = List<BookData?>.from(newBooks.data ?? []);
-        // List<Map<String, dynamic>> value = shelfUiComponentsController
-        //     .mapShelfData(
-        //       booksData: cloneData,
-        //       ref: ref,
-        //       shelfPagingControllerProvider: physicalShelfPagingProvider,
-        //     );
-        // ref.read(physicalShelfPagingProvider).appendLastPage(value);
+        // List<Map<String, dynamic>> value =
+        //     shelfUiComponentsController.mapShelfData(
+        //         booksData: cloneData,
+        //         ref: ref,
+        //         shelfPagingControllerProvider: audioShelfPagingProvider);
+        // ref.read(audioShelfPagingProvider).appendLastPage(value);
       } else {
         ref
-            .read(physicalPagingControllerProvider)
+            .read(audioPagingControllerProvider)
             .appendPage(newBooks.data ?? [], nextPage);
-        // var cloneData = List<BookData?>.from(newBooks.data ?? []);
-        // List<Map<String, dynamic>> value = shelfUiComponentsController
-        //     .mapShelfData(
-        //       booksData: cloneData,
-        //       ref: ref,
-        //       shelfPagingControllerProvider: physicalShelfPagingProvider,
-        //     );
-        // log("mapData - $value");
-        // ref.read(physicalShelfPagingProvider).appendPage(value, nextPage);
+        // final cloneData = List<BookData?>.from(newBooks.data ?? []);
+        // List<Map<String, dynamic>> value =
+        //     shelfUiComponentsController.mapShelfData(
+        //         booksData: cloneData,
+        //         ref: ref,
+        //         shelfPagingControllerProvider: audioShelfPagingProvider);
+        // // log("mapData - $value");
+        // ref.read(audioShelfPagingProvider).appendPage(value, nextPage);
       }
       state = state.copyWith(
-        books: [...state.books, ...?newBooks.data?.whereType<Book>()],
+        books: [...state.books, ...(newBooks.data?.cast<Book>() ?? [])],
         hasMore: newBooks.data?.isNotEmpty,
-        page: nextPage,
+        page: state.page + 1,
       );
+      // log("stateData - ${state.books.map((e) => e.toJson()).toList().length}");
     } on DioException catch (error) {
       log("Error Occured - $error");
       if (error.response?.statusCode == 404) {
         // pagingController.error = "No More Books";
-        ref.read(physicalPagingControllerProvider).appendLastPage([]);
-        // ref.read(physicalShelfPagingProvider).appendLastPage([]);
+        ref.read(audioPagingControllerProvider).appendLastPage([]);
+        ref.read(audioShelfPagingProvider).appendLastPage([]);
         return;
       }
     } catch (e) {
@@ -102,17 +103,17 @@ class PhysicalBooksNotifier extends StateNotifier<BooksState> {
   }
 
   void reset() {
-    ref.read(physicalPagingControllerProvider).itemList = [];
-    // ref.read(physicalShelfPagingProvider).itemList = [];
+    ref.read(audioPagingControllerProvider).itemList = [];
+    ref.read(audioShelfPagingProvider).itemList = [];
   }
 }
 
-final selectedPhysicalLibrary = StateProvider<String?>((ref) => null);
+final selectedAudioLibrary = StateProvider<String?>((ref) => null);
 
-final physicalBooksStateProvider = StateNotifierProvider.family<
-  PhysicalBooksNotifier,
+final audioBooksStateProvider = StateNotifierProvider.family<
+  AudioBooksNotifier,
   BooksState,
   Map<String, dynamic>?
 >((ref, arg) {
-  return PhysicalBooksNotifier(ref, arg);
+  return AudioBooksNotifier(ref, arg);
 });
