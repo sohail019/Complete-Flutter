@@ -1,5 +1,7 @@
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
+import 'package:_08_boi_poka/constants/app_routes.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -85,7 +87,7 @@ class CommonAppbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             onTap: () {
-              // context.pushRoute(PageRouteInfo(AppRoutes.profileScreen));
+              context.pushRoute(PageRouteInfo(AppRoutes.profile));
             },
           ),
         ),

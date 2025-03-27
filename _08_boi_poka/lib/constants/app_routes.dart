@@ -11,4 +11,6 @@ class AppRoutes {
   static String scale = "ScaleRoute";
   static String setPattern = "SetPatternRoute";
   static String stockChart = "StockChart";
+  static String profile = "ProfileRoute";
+  static String bookDetails = "BookDetailsRoute";
 }

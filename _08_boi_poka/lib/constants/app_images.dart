@@ -33,4 +33,12 @@ class AppImages {
   static String listfilter = "lib/assets/images/list-filter.png";
   static String closeIcon = "lib/assets/images/close.png";
   static String moreIconHorizontal = "lib/assets/images/more_horizontal.png";
+  static String accPlus = "lib/assets/images/acc-plus.png";
+  static String accMinus = "lib/assets/images/acc-minus.png";
+  static String bookRow = "lib/assets/images/book-row.png";
+  static String bookColumn = "lib/assets/images/book-coloumn.png";
+  static String quotesIcon = "lib/assets/images/quotes.png";
+  static String fictionHeart = "lib/assets/images/fiction_heart.png";
+  static String arrowRight = "lib/assets/images/arrow-right.png";
+  static String profileUserWhite = "lib/assets/images/user-white.png";
 }

@@ -22,6 +22,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: AnalyticsRoute.page, initial: false),
     AutoRoute(page: LibRoute.page, initial: false),
     AutoRoute(page: StockChartRoute.page, initial: false),
+    AutoRoute(page: ProfileRoute.page, initial: false),
   ];
 
   // // Method to asynchronously fetch the initial route

@@ -2,6 +2,7 @@ import 'package:_08_boi_poka/controller/secure_storage_controller.dart';
 import 'package:_08_boi_poka/core/services/datasources/auth_remote_datasource.dart';
 import 'package:_08_boi_poka/core/services/datasources/shared_preference_impl.dart';
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
+import 'package:_08_boi_poka/providers/library_provider/get_all_library_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,7 +42,7 @@ class AuthRemoteController {
       password: password,
       context: context,
     );
-    storeAuthData(data.response, ref, true);
+    await storeAuthData(data, ref, true);
     return data;
   }
 
@@ -80,8 +81,8 @@ class AuthRemoteController {
       mapData.response["data"]["isVerified"],
     );
 
-    // if (isLogin) {
-    //   final library = ref.read(libraryProvider);
-    // }
+    if (isLogin) {
+      final library = ref.read(libraryProvider);
+    }
   }
 }

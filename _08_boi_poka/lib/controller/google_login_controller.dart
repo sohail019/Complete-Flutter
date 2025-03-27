@@ -1,10 +1,13 @@
 import "dart:io";
+import "package:_08_boi_poka/constants/app_routes.dart";
 import "package:_08_boi_poka/controller/secure_storage_controller.dart";
 import "package:_08_boi_poka/controller/social_login_controller.dart";
 import "package:_08_boi_poka/core/services/datasources/shared_preference_impl.dart";
 import "package:_08_boi_poka/core/utils/api_utils.dart";
 import "package:_08_boi_poka/core/utils/function_utils.dart";
+import "package:_08_boi_poka/providers/library_provider/get_all_library_provider.dart";
 import "package:_08_boi_poka/screens/home/home_screen.dart";
+import "package:auto_route/auto_route.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
@@ -78,23 +81,20 @@ class GoogleLoginController {
             key: "tokenExpiryDate",
             value: data.response['data']['tokenExpiryDate'],
           );
+          // try {
+          //   getUserDataAndStore();
+          // } catch (e) {
+          //   print(e);
+          // }
           if (onBoarded) {
-            // final library = ref.read(libraryProvider);
-            Future.microtask(() {
+            Future.microtask(() async {
+              // await ref.read(libraryProvider.notifier).refreshLibrary();
               context.loaderOverlay.hide();
+              context.router.pushAndPopUntil(
+                PageRouteInfo(AppRoutes.homeScreen),
+                predicate: (route) => false,
+              );
             });
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomeScreen(),
-                // builder: (context) => AnalyticsScreen(),
-              ),
-            );
-            // context.loaderOverlay.hide();
-            // context.router.pushAndPopUntil(
-            //   PageRouteInfo(AppRoutes.homeScreen),
-            //   predicate: (route) => false,
-            // );
           } else {
             context.loaderOverlay.hide();
             // customPhoneNumberDialogue(context, phoneNum);

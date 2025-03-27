@@ -169,7 +169,8 @@ class SigninScreenState extends ConsumerState<SigninScreen> {
                           // Wait for SnackBar to finish before navigating
                           await Future.delayed(Duration(seconds: 2));
 
-                          context.pushRoute(SetPatternRoute());
+                          // context.pushRoute(SetPatternRoute());
+                          context.pushRoute(HomeRoute());
                           SessionManager.saveLastScreen('/set-pattern');
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(

@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:_08_boi_poka/core/services/datasources/books_datasource.dart';
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
 import 'package:_08_boi_poka/models/get_all_books_model.dart';
 import 'package:_08_boi_poka/models/get_all_library_model.dart';
+import 'package:_08_boi_poka/models/get_book_analytics_model.dart';
+import 'package:_08_boi_poka/models/similar_books_model.dart';
 
 class BooksController {
   final booksDatasource = BooksDataSource();
@@ -68,5 +72,33 @@ class BooksController {
       searchTitle: searchTitle,
     );
     return GetAllBooksModel.fromJson(data.response);
+  }
+
+  Future<List<SimilarBooksModel>> getSimilarBooks({
+    required String bookId,
+  }) async {
+    List<SimilarBooksModel> data = await booksDatasource.getSimilarBooks(
+      bookId: bookId,
+    );
+    return data;
+  }
+
+  Future<List<SimilarBooksModel>> getBooksByAuthor({
+    required String bookId,
+  }) async {
+    List<SimilarBooksModel> data = await booksDatasource.getBooksByAuthor(
+      bookId: bookId,
+    );
+    return data;
+  }
+
+  Future<GetBookAnalyticsModel> getBookAnalytics({
+    required String bookId,
+  }) async {
+    GetBookAnalyticsModel data = await booksDatasource.getBookAnalytics(
+      bookId: bookId,
+    );
+    log("Get Books By Author - $data");
+    return data;
   }
 }

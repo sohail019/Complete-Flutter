@@ -145,11 +145,14 @@ class ApiUtils {
     required String endPoint,
   }) async {
     try {
-      // String? token = await _storage.getSecureData
+      // String? token = await _storage.getSecureData;
       // baseUrl = baseUrl ?? dotenv.env["BaseURL"]!;
       final Uri uri = Uri.parse("$baseUrl$endPoint");
+      log("API Request to: $uri");
+      log("Request Data: ${data ?? formData}");
       log(endPoint.toString());
       final Response response = await dio.postUri(uri, data: data ?? formData);
+
       ResponseModel responseData = ResponseModel(
         statusCode: response.statusCode!,
         response: response.data,
@@ -221,6 +224,30 @@ class ApiUtils {
         options: Options(headers: {"Content-Type": "application/json"}),
       );
 
+      ResponseModel responseData = ResponseModel(
+        statusCode: response.statusCode!,
+        response: response.data,
+      );
+      return responseData;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ResponseModel> getGoogleBooksApi({
+    required String baseUrl,
+    required String endPoint,
+  }) async {
+    try {
+      final Uri uri = Uri.parse("$baseUrl$endPoint");
+      final Response response = await Dio().getUri(
+        uri,
+        // options: Options(
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // ),
+      );
       ResponseModel responseData = ResponseModel(
         statusCode: response.statusCode!,
         response: response.data,

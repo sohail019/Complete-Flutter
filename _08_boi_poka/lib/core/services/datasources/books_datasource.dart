@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
 import 'package:_08_boi_poka/models/get_all_library_model.dart';
+import 'package:_08_boi_poka/models/get_book_analytics_model.dart';
+import 'package:_08_boi_poka/models/similar_books_model.dart';
 
 class BooksDataSource {
   final apiUtils = ApiUtils();
@@ -77,5 +79,47 @@ class BooksDataSource {
       },
     );
     return data;
+  }
+
+  //? Get Book Analytics
+  Future<GetBookAnalyticsModel> getBookAnalytics({
+    required String bookId,
+  }) async {
+    ResponseModel data = await apiUtils.getApi(
+      baseUrl: apiUtils.dio.options.baseUrl,
+      endPoint: "/api/book/getBookAnalytics?bookId=$bookId",
+    );
+    return GetBookAnalyticsModel.fromJson(data.response);
+  }
+
+  Future<List<SimilarBooksModel>> getSimilarBooks({
+    required String bookId,
+  }) async {
+    ResponseModel data = await apiUtils.getApi(
+      baseUrl: apiUtils.dio.options.baseUrl,
+      endPoint: "/api/book/similarBooks?bookId=$bookId",
+    );
+    List<dynamic> authorBooks = data.response['data'];
+    List<SimilarBooksModel> bookData =
+        authorBooks.map((e) => SimilarBooksModel.fromJson(e)).toList();
+    log("Get Similar Books - $data");
+
+    return bookData;
+  }
+
+  Future<List<SimilarBooksModel>> getBooksByAuthor({
+    required String bookId,
+  }) async {
+    ResponseModel data = await apiUtils.getApi(
+      baseUrl: apiUtils.dio.options.baseUrl,
+      endPoint: "/api/book/author?bookId=$bookId",
+    );
+    List<dynamic> authorBooks = data.response['data'];
+    List<SimilarBooksModel> bookData =
+        authorBooks.map((e) => SimilarBooksModel.fromJson(e)).toList();
+
+    log("Get Books By Author- $bookData");
+
+    return bookData;
   }
 }

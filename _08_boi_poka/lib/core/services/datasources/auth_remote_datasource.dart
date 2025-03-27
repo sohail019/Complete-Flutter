@@ -38,6 +38,8 @@ class AuthRemoteDatasource {
       data: {"mobileNumber": phoneNum, "password": password},
     );
 
+    print("API Response: ${data}");
+
     return data;
   }
 
