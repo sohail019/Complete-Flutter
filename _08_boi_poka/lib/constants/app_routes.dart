@@ -13,4 +13,8 @@ class AppRoutes {
   static String stockChart = "StockChart";
   static String profile = "ProfileRoute";
   static String bookDetails = "BookDetailsRoute";
+  static String authConsent = "AuthConsentRoute";
+  static String referralCode = "ReferralCodeRoute";
+  static String otp = "OtpRoute";
+  static String forgetPassword = "ForgetPasswordRoute";
 }

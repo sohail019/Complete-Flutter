@@ -92,6 +92,7 @@ class _SetPatternScreenState extends State<SetPatternScreen> {
                                   : "enable face id",
                           disabled: false,
                           variant: "link",
+                          iconImg: null,
                         ),
                       ),
                     ],
@@ -113,6 +114,7 @@ class _SetPatternScreenState extends State<SetPatternScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15.0),
                         child: AdaptiveButtonWidget(
+                          iconImg: null,
                           onTap: () {
                             showDialog(
                               context: context,

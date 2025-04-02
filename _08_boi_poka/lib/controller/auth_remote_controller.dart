@@ -27,7 +27,7 @@ class AuthRemoteController {
       password: password,
       context: context,
     );
-    // storeAuthData(mapData, ref, false);
+    storeAuthData(mapData, ref, false);
     return mapData;
   }
 
@@ -43,6 +43,30 @@ class AuthRemoteController {
       context: context,
     );
     await storeAuthData(data, ref, true);
+    return data;
+  }
+
+  Future<ResponseModel> forgetPassword({
+    required String phoneNum,
+    required String type,
+  }) async {
+    ResponseModel data = await _authRemoteDatasource.forgetPassword(
+      phoneNum: phoneNum,
+      type: type,
+    );
+    return data;
+  }
+
+  Future<ResponseModel> verifyOtp({
+    required String phoneNum,
+    required String otp,
+    required BuildContext context,
+  }) async {
+    ResponseModel data = await _authRemoteDatasource.verifyOtp(
+      otp: otp,
+      phoneNum: phoneNum,
+      context: context,
+    );
     return data;
   }
 

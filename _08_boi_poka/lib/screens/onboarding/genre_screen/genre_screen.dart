@@ -1,6 +1,8 @@
 import 'package:_08_boi_poka/components/adaptive_button.dart';
+import 'package:_08_boi_poka/components/snackbar_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
+import 'package:_08_boi_poka/constants/app_routes.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/core/utils/session_manager.dart';
 import 'package:_08_boi_poka/navigation/app_router.gr.dart';
@@ -161,10 +163,27 @@ class _GenreScreenState extends State<GenreScreen> {
                   child: AdaptiveButtonWidget(
                     disabled: false,
                     selectedGenreLen: selectedGenre.length,
-                    onTap: () async {
-                      await SessionManager.saveLastScreen('/scale');
-                      context.pushRoute(ScaleRoute());
-                    },
+                    onTap:
+                        isNavigateEnable
+                            ? () {
+                              if (selectedGenre.length >= 3) {
+                                context.pushRoute(
+                                  PageRouteInfo(
+                                    AppRoutes.scale,
+                                    args: ScaleRoute(
+                                      selectedGenre: selectedGenre,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                SnackbarWidget(
+                                  textToShow: "Please Select At Least 3 Genre",
+                                  durationInMilliseconds: 3000,
+                                  context: context,
+                                );
+                              }
+                            }
+                            : () {},
                     title: "next",
                     iconImg: AppImages.nextIcon,
                   ),

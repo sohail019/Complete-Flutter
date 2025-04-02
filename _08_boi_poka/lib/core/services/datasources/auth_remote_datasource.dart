@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,37 @@ class AuthRemoteDatasource {
 
     print("API Response: ${data}");
 
+    return data;
+  }
+
+  Future<ResponseModel> forgetPassword({
+    required String phoneNum,
+    required String type,
+  }) async {
+    String endPoint = "/api/user/getForgotOTP";
+    if (type.isNotEmpty && type == "register") {
+      endPoint = "/api/user/getRegisterOTP";
+    }
+    ResponseModel data = await apiUtils.getApi(
+      baseUrl: apiUtils.dio.options.baseUrl,
+      endPoint: endPoint,
+      data: {"phone": phoneNum, "type": type.isNotEmpty ? type : "register"},
+    );
+    log("Forget Password Response - ${data.response}");
+    return data;
+  }
+
+  Future<ResponseModel> verifyOtp({
+    required String phoneNum,
+    required String otp,
+    required BuildContext context,
+  }) async {
+    ResponseModel data = await apiUtils.postApi(
+      baseUrl: apiUtils.dio.options.baseUrl,
+      endPoint: "/api/user/verifyOTP",
+      data: {"phone": phoneNum, "otp": otp},
+    );
+    log("Verify Password  - $data");
     return data;
   }
 

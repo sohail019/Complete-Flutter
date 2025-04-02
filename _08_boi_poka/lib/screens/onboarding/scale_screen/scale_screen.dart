@@ -1,18 +1,20 @@
 import 'package:_08_boi_poka/components/adaptive_button.dart';
+import 'package:_08_boi_poka/components/custom_loading_dialog_widget.dart';
 import 'package:_08_boi_poka/components/custom_slider_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
+import 'package:_08_boi_poka/constants/app_routes.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
-import 'package:_08_boi_poka/core/utils/session_manager.dart';
+import 'package:_08_boi_poka/controller/interests_controller.dart';
 import 'package:_08_boi_poka/navigation/app_router.gr.dart';
-import 'package:_08_boi_poka/screens/onboarding/lib_screen/lib_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 
 @RoutePage()
 class ScaleScreen extends StatefulWidget {
-  const ScaleScreen({super.key});
+  final List<String> selectedGenre;
+  const ScaleScreen({super.key, required this.selectedGenre});
 
   @override
   State<ScaleScreen> createState() => _ScaleScreenState();
@@ -123,8 +125,36 @@ class _ScaleScreenState extends State<ScaleScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 45.w),
                 child: AdaptiveButtonWidget(
                   onTap: () async {
-                    await SessionManager.saveLastScreen('/library');
-                    context.pushRoute(LibRoute());
+                    // await SessionManager.saveLastScreen('/library');
+                    // context.pushRoute(LibRoute());
+
+                    final interestsController = InterestsController();
+                    customLoadingDialogWidget(context);
+                    await interestsController
+                        .storeGenreAndInterests(
+                          genres: widget.selectedGenre,
+                          interests: interests,
+                        )
+                        .then((value) {
+                          if (value.statusCode == 200 ||
+                              value.statusCode == 201) {
+                            // context.pushRoute(
+                            //   PageRouteInfo(
+                            //     AppRoutes.library,
+                            //     args: LibRouteArgs(imageFile: null),
+                            //   ),
+                            // );
+                            context.pushRoute(LibRoute(imageFile: null));
+                          }
+                        })
+                        .onError((error, stackTrace) {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Error: ${error.toString()}'),
+                            ),
+                          );
+                        });
                   },
                   title: "next",
                   disabled: false,

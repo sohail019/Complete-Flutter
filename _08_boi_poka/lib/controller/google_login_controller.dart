@@ -5,8 +5,7 @@ import "package:_08_boi_poka/controller/social_login_controller.dart";
 import "package:_08_boi_poka/core/services/datasources/shared_preference_impl.dart";
 import "package:_08_boi_poka/core/utils/api_utils.dart";
 import "package:_08_boi_poka/core/utils/function_utils.dart";
-import "package:_08_boi_poka/providers/library_provider/get_all_library_provider.dart";
-import "package:_08_boi_poka/screens/home/home_screen.dart";
+import "package:_08_boi_poka/screens/auth/widgets/custom_phone_num_dialogue.dart";
 import "package:auto_route/auto_route.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
@@ -67,6 +66,10 @@ class GoogleLoginController {
             sharedPref.storeBool("onBoarded", onBoarded);
             sharedPref.storeBool("isLogin", true);
           }
+          sharedPref.storeBool(
+            "isVerified",
+            data.response['data']['isVerified'],
+          );
           sharedPref.storeData("email", userCredential.user!.email!);
 
           await _secureStorageController.storeSecureData(
@@ -81,11 +84,11 @@ class GoogleLoginController {
             key: "tokenExpiryDate",
             value: data.response['data']['tokenExpiryDate'],
           );
-          // try {
-          //   getUserDataAndStore();
-          // } catch (e) {
-          //   print(e);
-          // }
+          try {
+            getUserDataAndStore();
+          } catch (e) {
+            print(e);
+          }
           if (onBoarded) {
             Future.microtask(() async {
               // await ref.read(libraryProvider.notifier).refreshLibrary();
@@ -95,9 +98,14 @@ class GoogleLoginController {
                 predicate: (route) => false,
               );
             });
+            // context.loaderOverlay.hide();
+            // context.router.pushAndPopUntil(
+            //   PageRouteInfo(AppRoutes.homeScreen),
+            //   predicate: (route) => false,
+            // );
           } else {
             context.loaderOverlay.hide();
-            // customPhoneNumberDialogue(context, phoneNum);
+            customPhoneNumberDialogue(context, phoneNum);
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

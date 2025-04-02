@@ -41,4 +41,9 @@ class AppImages {
   static String fictionHeart = "lib/assets/images/fiction_heart.png";
   static String arrowRight = "lib/assets/images/arrow-right.png";
   static String profileUserWhite = "lib/assets/images/user-white.png";
+  static String fingerprint = "lib/assets/images/fingerprint.png";
+  static String authFaceRecognition =
+      "lib/assets/images/auth_face_recognization.png";
+  static String leftTopCornerPoka =
+      "lib/assets/images/left-top-corner-poka.png";
 }

@@ -2,10 +2,12 @@ import 'package:_08_boi_poka/components/adaptive_button.dart';
 import 'package:_08_boi_poka/components/custom_textfield_widget.dart';
 import 'package:_08_boi_poka/constants/app_colors.dart';
 import 'package:_08_boi_poka/constants/app_images.dart';
+import 'package:_08_boi_poka/constants/app_routes.dart';
 import 'package:_08_boi_poka/constants/app_typography.dart';
 import 'package:_08_boi_poka/controller/auth_remote_controller.dart';
 import 'package:_08_boi_poka/controller/google_login_controller.dart';
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
+import 'package:_08_boi_poka/core/utils/function_utils.dart';
 import 'package:_08_boi_poka/core/utils/session_manager.dart';
 import 'package:_08_boi_poka/navigation/app_router.gr.dart';
 import 'package:_08_boi_poka/screens/auth/widgets/common_page_header_widget.dart';
@@ -137,9 +139,56 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                             if (responseModel.statusCode == 200 ||
                                 responseModel.statusCode == 201) {
                               await SessionManager.saveLastScreen('/signin');
-
+                              getUserDataAndStore();
                               // Navigate to the Signin screen
-                              context.pushRoute(SigninRoute());
+                              // context.pushRoute(Otp);
+
+                              final authController = AuthRemoteController();
+                              await authController
+                                  .forgetPassword(
+                                    phoneNum: _phoneNumController.text.trim(),
+                                    type: 'register',
+                                  )
+                                  .then((value) {
+                                    context.loaderOverlay.hide();
+
+                                    if (value.statusCode == 200 ||
+                                        value.statusCode == 201) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'OTP Sent Successfully',
+                                          ),
+                                          backgroundColor: Colors.green,
+                                        ),
+                                      );
+
+                                      // context.router.push()
+
+                                      context.pushRoute(
+                                        PageRouteInfo(
+                                          AppRoutes.otp,
+                                          args: OtpRouteArgs(
+                                            phoneNum:
+                                                _phoneNumController.text.trim(),
+                                            otpType: 'register',
+                                            isPhoneNumAuthentication: true,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  })
+                                  .onError((error, stackTrace) {
+                                    context.loaderOverlay.hide();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('OTP Sending Failed'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  });
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
