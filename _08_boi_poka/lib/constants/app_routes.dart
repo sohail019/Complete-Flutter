@@ -17,4 +17,5 @@ class AppRoutes {
   static String referralCode = "ReferralCodeRoute";
   static String otp = "OtpRoute";
   static String forgetPassword = "ForgetPasswordRoute";
+  static String selectFetchedBooksScreen = "SelectFetchedBooksRoute";
 }

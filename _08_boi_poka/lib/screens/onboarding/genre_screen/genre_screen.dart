@@ -170,7 +170,7 @@ class _GenreScreenState extends State<GenreScreen> {
                                 context.pushRoute(
                                   PageRouteInfo(
                                     AppRoutes.scale,
-                                    args: ScaleRoute(
+                                    args: ScaleRouteArgs(
                                       selectedGenre: selectedGenre,
                                     ),
                                   ),

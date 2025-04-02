@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:_08_boi_poka/core/utils/api_utils.dart';
+import 'package:_08_boi_poka/models/add_book_request_modal.dart';
 import 'package:_08_boi_poka/models/get_all_library_model.dart';
 import 'package:_08_boi_poka/models/get_book_analytics_model.dart';
 import 'package:_08_boi_poka/models/similar_books_model.dart';
+import 'package:flutter/material.dart';
 
 class BooksDataSource {
   final apiUtils = ApiUtils();
@@ -51,6 +53,20 @@ class BooksDataSource {
     );
     log("Get Member All Library - $data");
     return data;
+  }
+
+  //? Add Books
+  Future<ResponseModel> addBooks(
+    BuildContext context,
+    AddBookRequest books,
+  ) async {
+    ResponseModel response = await apiUtils.postApi(
+      // data: {"books": books.books},
+      data: books.toJson(),
+      baseUrl: apiUtils.dio.options.baseUrl,
+      endPoint: "/api/userBook/addMultipleBooks",
+    );
+    return response;
   }
 
   //? Get Member All Book
