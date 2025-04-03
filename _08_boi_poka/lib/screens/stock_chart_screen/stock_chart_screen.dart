@@ -34,8 +34,12 @@ class _StockChartScreenState extends State<StockChartScreen> {
     _tooltip = TooltipBehavior(enable: true, format: 'point.x: point.close');
     _trackballBehavior = TrackballBehavior(enable: true);
 
+    // socket = io.io(
+    //   'http://192.168.1.37:3000',
+    //   io.OptionBuilder().setTransports(['websocket']).build(),
+    // );
     socket = io.io(
-      'http://192.168.1.37:3000',
+      'https://mock-socket-stock.onrender.com/',
       io.OptionBuilder().setTransports(['websocket']).build(),
     );
 

@@ -78,8 +78,8 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
-                            // context.pushRoute(CarouselRoute());
-                            context.pushRoute(StockChartRoute());
+                            context.pushRoute(CarouselRoute());
+                            // context.pushRoute(StockChartRoute());
                           },
                           icon: const Icon(Icons.arrow_forward),
                           label: const Text('Go to Carousel Screen'),
