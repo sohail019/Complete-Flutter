@@ -16,13 +16,13 @@ class _StockChartScreenState extends State<StockChartScreen> {
   late List<_ChartData> data;
   late TooltipBehavior _tooltip;
   late TrackballBehavior _trackballBehavior;
+  late ZoomPanBehavior _zoomPanBehavior; // ✅ Added for scrolling
   late io.Socket socket;
   Timer? _candleTimer;
 
-  final int maxDataPoints = 5;
-  int candleDuration = 30; // 🔥 Changed to 30 seconds
+  int candleDuration = 10; // 10 seconds
   int secondsPassed = 0;
-  bool isFirstCandleCreated = false; // Flag to track first candle
+  bool isFirstCandleCreated = false;
 
   _ChartData? currentCandle;
 
@@ -33,30 +33,35 @@ class _StockChartScreenState extends State<StockChartScreen> {
 
     _tooltip = TooltipBehavior(enable: true, format: 'point.x: point.close');
     _trackballBehavior = TrackballBehavior(enable: true);
+    _zoomPanBehavior = ZoomPanBehavior(
+      enablePanning: true, // ✅ Allow panning (scrolling)
+      enablePinching: true, // ✅ Allow zooming
+      enableDoubleTapZooming: true,
+      enableSelectionZooming: true,
+      zoomMode: ZoomMode.xy,
+    );
 
+    // socket = io.io(
+    //   'https://mock-socket-stock.onrender.com/',
+    //   io.OptionBuilder().setTransports(['websocket']).build(),
+    // );
+    socket = io.io(
+      'http://192.168.255.103:3000',
+      io.OptionBuilder().setTransports(['websocket']).build(),
+    );
     // socket = io.io(
     //   'http://192.168.1.37:3000',
     //   io.OptionBuilder().setTransports(['websocket']).build(),
     // );
-    socket = io.io(
-      'https://mock-socket-stock.onrender.com/',
-      io.OptionBuilder().setTransports(['websocket']).build(),
-    );
 
-    socket.on('connect', (_) {
-      print('Connected to server');
-    });
+    socket.on('connect', (_) => print('Connected to server'));
 
     socket.on('stock_update', (stockData) {
       print('Received stock data: $stockData');
-      if (mounted) {
-        _handleStockUpdate(stockData);
-      }
+      if (mounted) _handleStockUpdate(stockData);
     });
 
-    socket.on('disconnect', (_) {
-      print('Disconnected from WebSocket');
-    });
+    socket.on('disconnect', (_) => print('Disconnected from WebSocket'));
 
     _startCandleTimer();
   }
@@ -66,7 +71,7 @@ class _StockChartScreenState extends State<StockChartScreen> {
       secondsPassed++;
       if (secondsPassed >= candleDuration) {
         _createNewCandle();
-        secondsPassed = 0; // Reset counter
+        secondsPassed = 0;
       }
     });
   }
@@ -79,10 +84,8 @@ class _StockChartScreenState extends State<StockChartScreen> {
       double low = stockData['low'].toDouble();
 
       if (!isFirstCandleCreated) {
-        // First candle should be created immediately
         _createFirstCandle(open, high, low, close);
       } else {
-        // Update current candle high/low in real-time
         currentCandle!.high =
             high > currentCandle!.high ? high : currentCandle!.high;
         currentCandle!.low =
@@ -93,14 +96,7 @@ class _StockChartScreenState extends State<StockChartScreen> {
   }
 
   void _createFirstCandle(double open, double high, double low, double close) {
-    currentCandle = _ChartData(
-      DateTime.now().millisecondsSinceEpoch.toString(),
-      high,
-      low,
-      open,
-      close,
-    );
-
+    currentCandle = _ChartData(DateTime.now(), high, low, open, close);
     data.add(currentCandle!);
     isFirstCandleCreated = true;
   }
@@ -115,7 +111,7 @@ class _StockChartScreenState extends State<StockChartScreen> {
       double newClose = newOpen;
 
       currentCandle = _ChartData(
-        DateTime.now().millisecondsSinceEpoch.toString(),
+        DateTime.now(),
         newHigh,
         newLow,
         newOpen,
@@ -123,10 +119,6 @@ class _StockChartScreenState extends State<StockChartScreen> {
       );
 
       data.add(currentCandle!);
-
-      if (data.length > maxDataPoints) {
-        data.removeAt(0);
-      }
     });
   }
 
@@ -140,25 +132,48 @@ class _StockChartScreenState extends State<StockChartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Stock Chart'),
+        backgroundColor: Colors.transparent,
+      ),
+      backgroundColor: Colors.white, //  TradingView style background
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SfCartesianChart(
-          primaryXAxis: CategoryAxis(interval: 1, labelRotation: 45),
+          backgroundColor: Colors.white,
+
+          primaryXAxis: DateTimeAxis(
+            intervalType: DateTimeIntervalType.seconds,
+            edgeLabelPlacement: EdgeLabelPlacement.shift,
+            axisLine: const AxisLine(color: Colors.black), // ✅ Axis color
+            labelStyle: const TextStyle(color: Colors.black),
+            majorGridLines: const MajorGridLines(color: Colors.grey),
+            // autoScrollingDelta: 10,
+          ),
           primaryYAxis: NumericAxis(
             minimum:
                 data.isNotEmpty
-                    ? data.map((e) => e.low).reduce((a, b) => a < b ? a : b)
+                    ? data.map((e) => e.low).reduce((a, b) => a < b ? a : b) -
+                        0.5 // 🔥 Small buffer
                     : 0,
             maximum:
                 data.isNotEmpty
-                    ? data.map((e) => e.high).reduce((a, b) => a > b ? a : b)
+                    ? data.map((e) => e.high).reduce((a, b) => a > b ? a : b) +
+                        0.5 // 🔥 Small buffer
                     : 40,
-            interval: 10,
+            interval: 0.5,
+            axisLine: const AxisLine(color: Colors.black),
+            labelStyle: const TextStyle(color: Colors.black),
+            majorGridLines: const MajorGridLines(color: Colors.grey),
+            enableAutoIntervalOnZooming: true,
+            autoScrollingMode: AutoScrollingMode.start,
+            rangePadding: ChartRangePadding.none,
           ),
           tooltipBehavior: _tooltip,
           trackballBehavior: _trackballBehavior,
-          series: <CartesianSeries<_ChartData, String>>[
-            CandleSeries<_ChartData, String>(
+          zoomPanBehavior: _zoomPanBehavior, //? Added scrolling support
+          series: <CartesianSeries<_ChartData, DateTime>>[
+            CandleSeries<_ChartData, DateTime>(
               dataSource: data,
               xValueMapper: (_ChartData data, _) => data.x,
               highValueMapper: (_ChartData data, _) => data.high,
@@ -166,6 +181,10 @@ class _StockChartScreenState extends State<StockChartScreen> {
               openValueMapper: (_ChartData data, _) => data.open,
               closeValueMapper: (_ChartData data, _) => data.close,
               name: 'Stock Data',
+              enableSolidCandles: true, // ? Looks better
+              bullColor: Colors.green, // ? Up trend color
+              bearColor: Colors.red, // ? Down trend color
+              showIndicationForSameValues: true,
             ),
           ],
         ),
@@ -177,7 +196,7 @@ class _StockChartScreenState extends State<StockChartScreen> {
 class _ChartData {
   _ChartData(this.x, this.high, this.low, this.open, this.close);
 
-  final String x;
+  final DateTime x; // ✅ Changed from String to DateTime
   double high;
   double low;
   double open;
