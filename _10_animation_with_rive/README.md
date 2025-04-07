@@ -1,4 +1,4 @@
-# rive_animation
+# _10_animation_with_rive
 
 A new Flutter project.
 
