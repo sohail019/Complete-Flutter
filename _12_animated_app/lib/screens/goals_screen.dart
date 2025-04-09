@@ -1,3 +1,4 @@
+import 'package:_12_animated_app/screens/goal_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../widgets/goal_card.dart';
@@ -12,6 +13,7 @@ class GoalScreen extends StatelessWidget {
       goalAmount: 300,
       color: Colors.pink.shade100,
       hashtag: '#sport',
+      currentMonth: 1,
     ),
     Goal(
       title: 'Sony Playstation 5',
@@ -20,6 +22,7 @@ class GoalScreen extends StatelessWidget {
       goalAmount: 800,
       color: Colors.blue.shade100,
       hashtag: '#game',
+      currentMonth: 1,
     ),
     Goal(
       title: 'Buffy Nature Skateboard',
@@ -28,6 +31,7 @@ class GoalScreen extends StatelessWidget {
       goalAmount: 240,
       color: Colors.yellow.shade100,
       hashtag: '#entertainment',
+      currentMonth: 1,
     ),
   ];
 
@@ -98,7 +102,22 @@ class GoalScreen extends StatelessWidget {
                                     ..scale(scale, scale)
                                     ..setEntry(3, 2, 0.001)
                                     ..rotateX(-0.1),
-                              child: GoalCard(goal: goal),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    PageRouteBuilder(
+                                      transitionDuration: const Duration(
+                                        milliseconds: 600,
+                                      ),
+                                      pageBuilder:
+                                          (_, __, ___) =>
+                                              GoalDetailScreen(goal: goal),
+                                      opaque: false,
+                                    ),
+                                  );
+                                },
+                                child: GoalCard(goal: goal),
+                              ),
                             ),
                           );
                         }).toList(),
