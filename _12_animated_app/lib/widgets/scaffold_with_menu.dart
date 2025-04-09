@@ -43,6 +43,7 @@ class _ScaffoldWithMenuState extends State<ScaffoldWithMenu> {
             {'icon': Icons.home, 'label': 'Home', 'route': '/'},
             {'icon': Icons.ballot, 'label': 'Tile', 'route': '/tile'},
             {'icon': Icons.person, 'label': 'Profile', 'route': '/profile'},
+            {'icon': Icons.flag, 'label': 'Goals', 'route': '/goals'},
           ],
         ),
 

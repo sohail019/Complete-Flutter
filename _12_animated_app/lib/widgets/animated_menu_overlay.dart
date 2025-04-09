@@ -1,3 +1,4 @@
+import 'package:_12_animated_app/screens/goals_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/animated_tile_screen.dart';
 import '../screens/home_page_screen.dart';
@@ -151,6 +152,8 @@ class _MenuOverlayState extends State<MenuOverlay>
                                           return const AnimatedTileScreen();
                                         case '/profile':
                                           return const ProfileScreen();
+                                        case '/goals':
+                                          return GoalScreen();
                                         default:
                                           return const HomeScreen();
                                       }
