@@ -37,8 +37,8 @@ class GoalScreen extends StatelessWidget {
     ),
   ];
 
-  final double cardHeight = 220.0;
-  final double overlap = 22.0;
+  final double cardHeight = 250.0;
+  final double overlap = 55.0;
 
   GoalScreen({super.key}); // 10% overlap
 
@@ -48,14 +48,14 @@ class GoalScreen extends StatelessWidget {
         (goals.length - 1) * (cardHeight - overlap) + cardHeight;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFEAEFFF),
+      backgroundColor: Colors.red.shade50,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 0),
             child: Column(
               children: [
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -117,46 +117,120 @@ class GoalScreen extends StatelessWidget {
                           int index = entry.key;
                           Goal goal = entry.value;
 
-                          double scale = 1.0 - (index * 0.03);
+                          // double scale = 1.0 - (index * 0.03);
+                          double scale = 1;
 
+                          // double scale = 1.0 - (index * index * 0.01);
+                          // double scale = 1 - (index / goals.length * 0.1);
                           return Positioned(
                             top: index * (cardHeight - overlap),
                             left: 0,
                             right: 0,
-                            child: Transform(
-                              alignment: Alignment.topCenter,
-                              transform:
-                                  Matrix4.identity()
-                                    ..scale(scale, scale)
-                                    ..setEntry(3, 2, 0.001)
-                                    ..rotateX(-0.1),
-                              child: GestureDetector(
-                                onTap: () {
-                                  RenderBox box =
-                                      context.findRenderObject() as RenderBox;
-                                  Offset position = box.localToGlobal(
-                                    Offset.zero,
-                                  );
-                                  final Size size = box.size;
-                                  Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                      transitionDuration: const Duration(
-                                        milliseconds: 600,
+                            child: SizedBox(
+                              width:
+                                  MediaQuery.of(context).size.width *
+                                  1, // Fixed width for all cards
+                              child: Transform(
+                                alignment: Alignment.topCenter,
+                                transform:
+                                    Matrix4.identity()
+                                      ..scale(scale, scale)
+                                      ..setEntry(3, 2, 0.003) // Perspective
+                                      ..rotateX(
+                                        0.1,
+                                      ), // Subtle rotation for perspective
+                                child: GestureDetector(
+                                  onTap: () {
+                                    RenderBox box =
+                                        context.findRenderObject() as RenderBox;
+                                    Offset position = box.localToGlobal(
+                                      Offset.zero,
+                                    );
+                                    final Size size = box.size;
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        transitionDuration: const Duration(
+                                          milliseconds: 600,
+                                        ),
+                                        pageBuilder:
+                                            (_, __, ___) => GoalDetailScreen(
+                                              goal: goal,
+                                              cardOffset: position,
+                                              cardSize: size,
+                                            ),
+                                        opaque: false,
                                       ),
-                                      pageBuilder:
-                                          (_, __, ___) => GoalDetailScreen(
-                                            goal: goal,
-                                            cardOffset: position,
-                                            cardSize: size,
-                                          ),
-                                      opaque: false,
-                                    ),
-                                  );
-                                },
-                                child: GoalCard(goal: goal),
+                                    );
+                                  },
+                                  // child: Container(
+                                  //   decoration: BoxDecoration(
+                                  //     color: goal.color,
+                                  //     borderRadius: BorderRadius.circular(
+                                  //       20,
+                                  //     ), // Rounded corners
+                                  //     // boxShadow: [
+                                  //     //   BoxShadow(
+                                  //     //     color: Colors.black.withOpacity(0.1),
+                                  //     //     blurRadius: 10,
+                                  //     //     offset: Offset(
+                                  //     //       0,
+                                  //     //       5,
+                                  //     //     ), // Subtle shadow for depth
+                                  //     //   ),
+                                  //     // ],
+                                  //   ),
+                                  child: GoalCard(
+                                    goal: goal,
+                                  ), // Your custom GoalCard widget
+                                ),
                               ),
                             ),
                           );
+                          // return Positioned(
+                          //   top: index * (cardHeight - overlap),
+                          //   left: 0,
+                          //   right: 0,
+                          //   child: SizedBox(
+                          //     width:
+                          //         MediaQuery.of(context).size.width *
+                          //         1, // Fixed width for all cards
+                          //     child: Transform(
+                          //       alignment: Alignment.topCenter,
+                          //       transform:
+                          //           Matrix4.identity()..scale(
+                          //             scale,
+                          //             scale,
+                          //           ), // Only scaling remains
+                          //       child: GestureDetector(
+                          //         onTap: () {
+                          //           RenderBox box =
+                          //               context.findRenderObject() as RenderBox;
+                          //           Offset position = box.localToGlobal(
+                          //             Offset.zero,
+                          //           );
+                          //           final Size size = box.size;
+                          //           Navigator.of(context).push(
+                          //             PageRouteBuilder(
+                          //               transitionDuration: const Duration(
+                          //                 milliseconds: 600,
+                          //               ),
+                          //               pageBuilder:
+                          //                   (_, __, ___) => GoalDetailScreen(
+                          //                     goal: goal,
+                          //                     cardOffset: position,
+                          //                     cardSize: size,
+                          //                   ),
+                          //               opaque: false,
+                          //             ),
+                          //           );
+                          //         },
+                          //         child: GoalCard(
+                          //           goal: goal,
+                          //         ), // Your custom GoalCard widget
+                          //       ),
+                          //     ),
+                          //   ),
+                          // );
                         }).toList(),
                   ),
                 ),
