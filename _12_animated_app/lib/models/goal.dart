@@ -8,7 +8,7 @@ class Goal {
   final double goalAmount;
   final Color color;
   final String hashtag;
-  final int currentMonth;
+  final List<int> progressByMonth;
 
   Goal({
     required this.title,
@@ -17,7 +17,7 @@ class Goal {
     required this.goalAmount,
     required this.color,
     required this.hashtag,
-    required this.currentMonth,
+    required this.progressByMonth,
   });
 
   int get percentage =>

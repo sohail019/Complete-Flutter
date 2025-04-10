@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 class ScaffoldWithMenu extends StatefulWidget {
   final Widget body;
   final String title;
+  final Color? backgroundColor;
 
-  const ScaffoldWithMenu({super.key, required this.body, required this.title});
+  const ScaffoldWithMenu({
+    super.key,
+    required this.body,
+    required this.title,
+    this.backgroundColor,
+  });
 
   @override
   State<ScaffoldWithMenu> createState() => _ScaffoldWithMenuState();

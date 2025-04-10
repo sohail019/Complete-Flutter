@@ -37,7 +37,7 @@ class _GoalCardState extends State<GoalCard> {
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeOut,
       height: 220,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: widget.goal.color,
         borderRadius: BorderRadius.circular(24),
@@ -84,6 +84,7 @@ class _GoalCardState extends State<GoalCard> {
                 fontSize: 50,
                 fontWeight: FontWeight.w900,
                 fontStyle: FontStyle.italic,
+                fontFamily: 'LuckiestGuy',
               ),
             ),
           ),

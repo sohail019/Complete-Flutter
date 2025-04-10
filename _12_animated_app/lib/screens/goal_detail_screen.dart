@@ -1,59 +1,135 @@
+import 'dart:async';
+import 'package:_12_animated_app/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../models/goal.dart';
 
 class GoalDetailScreen extends StatefulWidget {
   final Goal goal;
+  final Offset cardOffset;
+  final Size cardSize;
 
-  const GoalDetailScreen({super.key, required this.goal});
+  const GoalDetailScreen({
+    super.key,
+    required this.goal,
+    required this.cardOffset,
+    required this.cardSize,
+  });
 
   @override
   State<GoalDetailScreen> createState() => _GoalDetailScreenState();
 }
 
 class _GoalDetailScreenState extends State<GoalDetailScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+    with TickerProviderStateMixin {
+  late AnimationController _mainController;
+  late AnimationController _bottomCardController;
+  late AnimationController _contentController;
+  late AnimationController _catController;
+
   late Animation<double> _bgHeightAnimation;
-  late Animation<Offset> _slideInAnimation;
+  late Animation<Offset> _bottomSlideAnimation;
+  late Animation<Offset> _contentSlideAnimation;
+  late Animation<double> _contentFadeAnimation;
+  late Animation<double> _catScaleAnimation;
+
+  int displayedPercentage = 0;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    _animatePercentage();
+
+    _mainController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 1000),
     );
 
-    _bgHeightAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+    _bottomCardController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
 
-    _slideInAnimation = Tween<Offset>(
+    _contentController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    _catController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+
+    _bgHeightAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _mainController, curve: Curves.easeOutCubic),
+    );
+
+    _bottomSlideAnimation = Tween<Offset>(
       begin: const Offset(0, 1),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
+    ).animate(
+      CurvedAnimation(parent: _bottomCardController, curve: Curves.easeOutBack),
+    );
 
-    _controller.forward();
+    _contentSlideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.2),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _contentController, curve: Curves.easeOut),
+    );
+
+    _contentFadeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _contentController, curve: Curves.easeIn),
+    );
+
+    _catScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _catController, curve: Curves.elasticOut),
+    );
+
+    Future.delayed(const Duration(milliseconds: 700), () {
+      _catController.forward();
+    });
+
+    _startAnimations();
+  }
+
+  Future<void> _startAnimations() async {
+    await _mainController.forward(); // Background first
+    await _bottomCardController.forward(); // Bottom card slide
+    await Future.delayed(const Duration(milliseconds: 200));
+    await _catController.forward(); // Cat scale
+    await _contentController.forward(); // Content slide + fade
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _mainController.dispose();
+    _bottomCardController.dispose();
+    _contentController.dispose();
+    _catController.dispose();
     super.dispose();
+  }
+
+  void _animatePercentage() {
+    Timer.periodic(const Duration(milliseconds: 20), (timer) {
+      if (displayedPercentage < widget.goal.percentage) {
+        setState(() => displayedPercentage++);
+      } else {
+        timer.cancel();
+      }
+    });
   }
 
   Widget buildBottomCard(double screenHeight) {
     return SlideTransition(
-      position: _slideInAnimation,
+      position: _bottomSlideAnimation,
       child: Container(
-        height: screenHeight * 0.5, // Half of screen
+        height: screenHeight * 0.5,
         width: double.infinity,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Colors.green, // Different from goal card color
+          color: Colors.green.shade800,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
           boxShadow: [
             BoxShadow(
@@ -63,41 +139,43 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.goal.title,
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+        child: FadeTransition(
+          opacity: _contentFadeAnimation,
+          child: SlideTransition(
+            position: _contentSlideAnimation,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 60),
+                const Text(
+                  "Amount Collected",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  "\$${widget.goal.currentAmount} of \$${widget.goal.goalAmount}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 75),
+                Text(
+                  widget.goal.title.toUpperCase(),
+                  style: const TextStyle(
+                    fontSize: 56,
+                    fontFamily: 'LuckiestGuy',
+                    fontWeight: FontWeight.w900,
+                    fontStyle: FontStyle.italic,
+                    letterSpacing: 1.5,
+                    height: 1.2,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              "Category: ${widget.goal.category}",
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.white70,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              "\$${widget.goal.currentAmount} saved of \$${widget.goal.goalAmount}",
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Chip(
-              label: Text(widget.goal.hashtag),
-              backgroundColor: widget.goal.color.withOpacity(0.3),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -110,99 +188,78 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: AnimatedBuilder(
-        animation: _controller,
+        animation: _mainController,
         builder: (_, __) {
           return Stack(
             children: [
               // Background expanding
-              Container(
-                height: _bgHeightAnimation.value * screenHeight,
-                width: double.infinity,
-                color: widget.goal.color,
-              ),
-
-              // Lottie animation
+              // Container(
+              //   height: _bgHeightAnimation.value * screenHeight,
+              //   width: double.infinity,
+              //   color: widget.goal.color,
+              // ),
               Positioned(
-                top: 80,
                 left: 0,
                 right: 0,
-                child: Center(
-                  child: Lottie.asset(
-                    'assets/Lottie/cat.json',
-                    height: 150,
-                    reverse: true,
-                  ),
-                ),
+                top:
+                    widget.cardOffset.dy +
+                    widget.cardSize.height / 2 -
+                    (_bgHeightAnimation.value * widget.cardSize.height / 2),
+                height:
+                    _bgHeightAnimation.value *
+                    MediaQuery.of(context).size.height,
+                child: Container(color: widget.goal.color),
               ),
-              // Horizontal progress bars with labels
+
+              // Top row
               Positioned(
-                top: 250,
+                top: 80,
                 left: 20,
                 right: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Progress",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Text(
+                        '$displayedPercentage%',
+                        style: const TextStyle(
+                          fontSize: 56,
+                          fontWeight: FontWeight.w900,
+                          fontStyle: FontStyle.italic,
+                          fontFamily: 'LuckiestGuy',
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Column(
-                      children: List.generate(3, (index) {
-                        final progress =
-                            (index + 1) *
-                            (10 + (index * 10)); // Random-like progress
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: AnimatedBuilder(
-                            animation: _controller,
-                            builder: (_, __) {
-                              final animatedProgress =
-                                  (_controller.value * progress).clamp(0, 100);
-                              return Row(
-                                children: [
-                                  Expanded(
-                                    flex: animatedProgress.toInt(),
-                                    child: Container(
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 100 - animatedProgress.toInt(),
-                                    child: Container(
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    "${animatedProgress.toInt()}%",
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        );
-                      }),
+                    CustomButton(
+                      onPressed: () {
+                        // Add your replenish logic here
+                      },
+                      text: "Replenish",
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ],
                 ),
               ),
+
+              // Horizontal progress bars
+              // Positioned(
+              //   top: 250,
+              //   left: 20,
+              //   right: 20,
+              //   child: HorizontalProgress(
+              //     progressValues: widget.goal.progressByMonth,
+              //     controller: _mainController,
+              //   ),
+              // ),
 
               // Bottom detail card
               Align(
@@ -210,10 +267,24 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
                 child: buildBottomCard(screenHeight),
               ),
 
+              // Cat animation
+              Positioned(
+                bottom: screenHeight * 0.5 - 110,
+                right: 30,
+                child: ScaleTransition(
+                  scale: _catScaleAnimation,
+                  child: Lottie.asset(
+                    'assets/Lottie/cat_sleeping.json',
+                    height: 230,
+                    reverse: true,
+                  ),
+                ),
+              ),
+
               // Back button
               Positioned(
                 top: 40,
-                left: 20,
+                left: 5,
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back, size: 28),
                   onPressed: () => Navigator.of(context).pop(),

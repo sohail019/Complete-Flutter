@@ -1,4 +1,5 @@
 import 'package:_12_animated_app/screens/goal_detail_screen.dart';
+import 'package:_12_animated_app/widgets/add_goal_bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../widgets/goal_card.dart';
@@ -13,16 +14,17 @@ class GoalScreen extends StatelessWidget {
       goalAmount: 300,
       color: Colors.pink.shade100,
       hashtag: '#sport',
-      currentMonth: 1,
+      progressByMonth: [92, 56, 30],
     ),
     Goal(
-      title: 'Sony Playstation 5',
+      title: 'Sony Playstation',
       category: 'game',
       currentAmount: 144,
       goalAmount: 800,
       color: Colors.blue.shade100,
       hashtag: '#game',
-      currentMonth: 1,
+
+      progressByMonth: [55, 69, 100],
     ),
     Goal(
       title: 'Buffy Nature Skateboard',
@@ -31,7 +33,7 @@ class GoalScreen extends StatelessWidget {
       goalAmount: 240,
       color: Colors.yellow.shade100,
       hashtag: '#entertainment',
-      currentMonth: 1,
+      progressByMonth: [80, 10, 68],
     ),
   ];
 
@@ -53,20 +55,46 @@ class GoalScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, size: 28),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
                     const Text(
                       'Goals',
                       style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 35,
+                        // fontWeight: FontWeight.bold,
+                        fontFamily: 'LuckiestGuy',
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
+
                     IconButton(
                       icon: const Icon(Icons.add, size: 28),
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (BuildContext context) {
+                            return DraggableScrollableSheet(
+                              initialChildSize: 0.6,
+                              minChildSize: 0.4,
+                              maxChildSize: 0.9,
+                              builder: (
+                                BuildContext context,
+                                ScrollController scrollController,
+                              ) {
+                                return AddGoalBottomSheet();
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -104,14 +132,23 @@ class GoalScreen extends StatelessWidget {
                                     ..rotateX(-0.1),
                               child: GestureDetector(
                                 onTap: () {
+                                  RenderBox box =
+                                      context.findRenderObject() as RenderBox;
+                                  Offset position = box.localToGlobal(
+                                    Offset.zero,
+                                  );
+                                  final Size size = box.size;
                                   Navigator.of(context).push(
                                     PageRouteBuilder(
                                       transitionDuration: const Duration(
                                         milliseconds: 600,
                                       ),
                                       pageBuilder:
-                                          (_, __, ___) =>
-                                              GoalDetailScreen(goal: goal),
+                                          (_, __, ___) => GoalDetailScreen(
+                                            goal: goal,
+                                            cardOffset: position,
+                                            cardSize: size,
+                                          ),
                                       opaque: false,
                                     ),
                                   );

@@ -94,28 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Spacer(flex: 2),
-
-                    //? add the animated button
-                    // AnimatedBtn(
-                    //   btnAnimationController: _btnAnimationController,
-                    //   press: () {
-                    //     // _btnAnimationController.isActive = true;
-                    //     // Future.delayed(const Duration(milliseconds: 500), () {
-                    //     //   setState(() {
-                    //     //     isSignInDialogShown = true;
-                    //     //   });
-                    //     //   //? Let's add the slide animation while dialog shows
-                    //     //   customSignInDialog(
-                    //     //     context,
-                    //     //     onClosed: (_) {
-                    //     //       setState(() {
-                    //     //         isSignInDialogShown = false;
-                    //     //       });
-                    //     //     },
-                    //     //   );
-                    //     // });
-                    //   },
-                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
                       child: Text(
