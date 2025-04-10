@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:_12_animated_app/components/custom_button.dart';
+import 'package:_12_animated_app/components/custom_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../models/goal.dart';
@@ -34,6 +35,7 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
   late Animation<double> _catScaleAnimation;
 
   int displayedPercentage = 0;
+  bool _isMessageVisible = false;
 
   @override
   void initState() {
@@ -271,12 +273,77 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
               Positioned(
                 bottom: screenHeight * 0.5 - 110,
                 right: 30,
-                child: ScaleTransition(
-                  scale: _catScaleAnimation,
-                  child: Lottie.asset(
-                    'assets/Lottie/cat_sleeping.json',
-                    height: 230,
-                    reverse: true,
+                child: GestureDetector(
+                  onTap: () {
+                    // Trigger the cat animation
+                    _catController.reverse().then((_) {
+                      _catController.forward();
+                    });
+
+                    // Show the message
+                    setState(() {
+                      _isMessageVisible = true;
+                    });
+
+                    // Hide the message after 2 seconds
+                    Future.delayed(const Duration(seconds: 2), () {
+                      if (mounted) {
+                        setState(() {
+                          _isMessageVisible = false;
+                        });
+                      }
+                    });
+                  },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    clipBehavior:
+                        Clip.none, // Ensure the message is not clipped
+                    children: [
+                      // Cat animation
+                      ScaleTransition(
+                        scale: _catScaleAnimation,
+                        child: RotationTransition(
+                          turns: Tween<double>(begin: 0, end: 1).animate(
+                            CurvedAnimation(
+                              parent: _catController,
+                              curve: Curves.easeInOut,
+                            ),
+                          ),
+                          child: Lottie.asset(
+                            'assets/Lottie/cat_sleeping.json',
+                            height: 230,
+                            reverse: true,
+                          ),
+                        ),
+                      ),
+                      // Message overlay
+                      if (_isMessageVisible)
+                        Positioned(
+                          top: -10, // Position the message above the cat
+                          child: Material(
+                            color: Colors.transparent,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black87,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Text(
+                                "Please, let me sleep",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: 'LuckiestGuy',
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
