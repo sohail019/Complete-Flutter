@@ -37,8 +37,8 @@ class GoalScreen extends StatelessWidget {
     ),
   ];
 
-  final double cardHeight = 250.0;
-  final double overlap = 55.0;
+  final double cardHeight = 280.0;
+  final double overlap = 100.0;
 
   GoalScreen({super.key}); // 10% overlap
 
@@ -50,66 +50,67 @@ class GoalScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.red.shade50,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            child: Column(
-              children: [
-                const SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back, size: 28),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    const Text(
-                      'Goals',
-                      style: TextStyle(
-                        fontSize: 35,
-                        // fontWeight: FontWeight.bold,
-                        fontFamily: 'LuckiestGuy',
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-
-                    IconButton(
-                      icon: const Icon(Icons.add, size: 28),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (BuildContext context) {
-                            return DraggableScrollableSheet(
-                              initialChildSize: 0.6,
-                              minChildSize: 0.4,
-                              maxChildSize: 0.9,
-                              builder: (
-                                BuildContext context,
-                                ScrollController scrollController,
-                              ) {
-                                return AddGoalBottomSheet();
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Lottie.asset(
-                    'assets/Lottie/cat.json',
-                    height: 160,
-                    width: 220,
-                    repeat: true,
-                    reverse: true,
-                    fit: BoxFit.cover,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 0),
+          child: Column(
+            children: [
+              const SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, size: 28),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
+                  const Text(
+                    'Goals',
+                    style: TextStyle(
+                      fontSize: 35,
+                      // fontWeight: FontWeight.bold,
+                      fontFamily: 'LuckiestGuy',
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+
+                  IconButton(
+                    icon: const Icon(Icons.add, size: 28),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (BuildContext context) {
+                          return DraggableScrollableSheet(
+                            initialChildSize: 0.6,
+                            minChildSize: 0.4,
+                            maxChildSize: 0.9,
+                            builder: (
+                              BuildContext context,
+                              ScrollController scrollController,
+                            ) {
+                              return AddGoalBottomSheet();
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Lottie.asset(
+                  'assets/Lottie/cat.json',
+                  height: 160,
+                  width: 230,
+                  repeat: true,
+                  reverse: true,
+                  fit: BoxFit.cover,
                 ),
-                SizedBox(
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 3),
+                child: SizedBox(
                   height: totalHeight,
                   child: Stack(
                     children:
@@ -135,7 +136,7 @@ class GoalScreen extends StatelessWidget {
                                 transform:
                                     Matrix4.identity()
                                       ..scale(scale, scale)
-                                      ..setEntry(3, 2, 0.003) // Perspective
+                                      ..setEntry(3, 2, 0.004) // Perspective
                                       ..rotateX(
                                         0.1,
                                       ), // Subtle rotation for perspective
@@ -234,8 +235,8 @@ class GoalScreen extends StatelessWidget {
                         }).toList(),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

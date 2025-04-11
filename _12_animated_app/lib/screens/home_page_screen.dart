@@ -1,8 +1,10 @@
 // home_screen.dart
 import 'dart:ui';
 
+import 'package:_12_animated_app/components/custom_button.dart';
 import 'package:_12_animated_app/widgets/animated_btn.dart';
 import 'package:_12_animated_app/widgets/scaffold_with_menu.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -55,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           //? Add the text
           AnimatedPositioned(
-            top: isSignInDialogShown ? -50 : 0,
+            top: isSignInDialogShown ? -100 : 0,
             duration: const Duration(milliseconds: 240),
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -64,31 +66,113 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Spacer(),
                     SizedBox(
                       width: 260,
                       child: Column(
-                        children: const [
-                          Text(
-                            "Learn design & code",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 60,
+                        children: [
+                          AnimatedTextKit(
+                            repeatForever: true,
 
-                              height: 1.2,
+                            animatedTexts: [
+                              TyperAnimatedText(
+                                "Learn Flutter Animations",
+                                textAlign: TextAlign.center,
+                                textStyle: TextStyle(
+                                  fontFamily: "LuckiestGuy",
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.w400,
+                                  color: const Color.fromARGB(255, 86, 85, 85),
+                                ),
+
+                                speed: Duration(milliseconds: 300),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 16),
+                          const Center(
+                            child: Text(
+                              "Don’t skip design. Learn design and code, by building real apps with real tools.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                                fontSize: 20,
+                                height: 1.5,
+                                color: Color.fromARGB(255, 86, 85, 85),
+                              ),
                             ),
                           ),
-                          SizedBox(height: 16),
-                          Text(
-                            "Don’t skip design. Learn design and code, by building real apps with real tools.",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 16,
-                              height: 1.5,
-                              color: Color.fromARGB(255, 86, 85, 85),
-                            ),
+                          const SizedBox(height: 40),
+                          CustomButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text(
+                                            "Thank You!",
+                                            style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                255,
+                                                86,
+                                                85,
+                                                85,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          const Text(
+                                            "Thanks for clicking the button. Have a great day!",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontSize: 16,
+                                              color: Color.fromARGB(
+                                                255,
+                                                86,
+                                                85,
+                                                85,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 24),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                            ),
+                                            child: const Text("Close"),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            text: "Click Me",
                           ),
                         ],
                       ),

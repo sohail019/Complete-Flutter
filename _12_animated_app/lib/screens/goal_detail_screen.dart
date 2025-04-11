@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:_12_animated_app/components/custom_button.dart';
-import 'package:_12_animated_app/components/custom_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../models/goal.dart';
@@ -71,7 +70,7 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
       begin: const Offset(0, 1),
       end: Offset.zero,
     ).animate(
-      CurvedAnimation(parent: _bottomCardController, curve: Curves.easeOutBack),
+      CurvedAnimation(parent: _bottomCardController, curve: Curves.easeOut),
     );
 
     _contentSlideAnimation = Tween<Offset>(
@@ -102,6 +101,17 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
     await Future.delayed(const Duration(milliseconds: 200));
     await _catController.forward(); // Cat scale
     await _contentController.forward(); // Content slide + fade
+  }
+
+  Future<void> _handleExitAnimation() async {
+    // Play the exit animations
+    await _contentController.reverse();
+    await _catController.reverse();
+    await Future.delayed(
+      const Duration(milliseconds: 100),
+    ); // Re-enable the delay
+    await _bottomCardController.reverse();
+    await _mainController.reverse();
   }
 
   @override
@@ -187,179 +197,221 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: AnimatedBuilder(
-        animation: _mainController,
-        builder: (_, __) {
-          return Stack(
-            children: [
-              // Background expanding
-              // Container(
-              //   height: _bgHeightAnimation.value * screenHeight,
-              //   width: double.infinity,
-              //   color: widget.goal.color,
-              // ),
-              Positioned(
-                left: 0,
-                right: 0,
-                top:
-                    widget.cardOffset.dy +
-                    widget.cardSize.height / 2 -
-                    (_bgHeightAnimation.value * widget.cardSize.height / 2),
-                height:
-                    _bgHeightAnimation.value *
-                    MediaQuery.of(context).size.height,
-                child: Container(color: widget.goal.color),
-              ),
-
-              // Top row
-              Positioned(
-                top: 80,
-                left: 20,
-                right: 20,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Text(
-                        '$displayedPercentage%',
-                        style: const TextStyle(
-                          fontSize: 56,
-                          fontWeight: FontWeight.w900,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: 'LuckiestGuy',
-                        ),
-                      ),
-                    ),
-                    CustomButton(
-                      onPressed: () {
-                        // Add your replenish logic here
-                      },
-                      text: "Replenish",
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ],
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
+        // if (didPop) {
+        //   _handleExitAnimation().then((_) {
+        //     Navigator.of(context).pop();
+        //   });
+        // } else {
+        //   _mainController.reverse().then((_) {
+        //     Navigator.of(context).pop();
+        //   });
+        // }
+        await _handleExitAnimation(); // Ensure animations complete
+        return null;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: AnimatedBuilder(
+          animation: _mainController,
+          builder: (_, __) {
+            return Stack(
+              children: [
+                // Background expanding
+                // Container(
+                //   height: _bgHeightAnimation.value * screenHeight,
+                //   width: double.infinity,
+                //   color: widget.goal.color,
+                // ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top:
+                      widget.cardOffset.dy +
+                      widget.cardSize.height / 2 -
+                      (_bgHeightAnimation.value * widget.cardSize.height / 2),
+                  height:
+                      _bgHeightAnimation.value *
+                      MediaQuery.of(context).size.height,
+                  child: Container(color: widget.goal.color),
                 ),
-              ),
 
-              // Horizontal progress bars
-              // Positioned(
-              //   top: 250,
-              //   left: 20,
-              //   right: 20,
-              //   child: HorizontalProgress(
-              //     progressValues: widget.goal.progressByMonth,
-              //     controller: _mainController,
-              //   ),
-              // ),
-
-              // Bottom detail card
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: buildBottomCard(screenHeight),
-              ),
-
-              // Cat animation
-              Positioned(
-                bottom: screenHeight * 0.5 - 110,
-                right: 30,
-                child: GestureDetector(
-                  onTap: () {
-                    // Trigger the cat animation
-                    _catController.reverse().then((_) {
-                      _catController.forward();
-                    });
-
-                    // Show the message
-                    setState(() {
-                      _isMessageVisible = true;
-                    });
-
-                    // Hide the message after 2 seconds
-                    Future.delayed(const Duration(seconds: 2), () {
-                      if (mounted) {
-                        setState(() {
-                          _isMessageVisible = false;
-                        });
-                      }
-                    });
-                  },
-                  child: Stack(
-                    alignment: Alignment.center,
-                    clipBehavior:
-                        Clip.none, // Ensure the message is not clipped
-                    children: [
-                      // Cat animation
-                      ScaleTransition(
-                        scale: _catScaleAnimation,
-                        child: RotationTransition(
-                          turns: Tween<double>(begin: 0, end: 1).animate(
-                            CurvedAnimation(
-                              parent: _catController,
-                              curve: Curves.easeInOut,
+                // Top row
+                // if (_contentFadeAnimation.value > 0)
+                Positioned(
+                  top: 80,
+                  left: 20,
+                  right: 20,
+                  child: FadeTransition(
+                    opacity: _contentFadeAnimation,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Text(
+                            '$displayedPercentage%',
+                            style: const TextStyle(
+                              fontSize: 56,
+                              fontWeight: FontWeight.w900,
+                              fontStyle: FontStyle.italic,
+                              fontFamily: 'LuckiestGuy',
                             ),
                           ),
-                          child: Lottie.asset(
-                            'assets/Lottie/cat_sleeping.json',
-                            height: 230,
-                            reverse: true,
+                        ),
+
+                        CustomButton(
+                          onPressed: () {
+                            // Add your replenish logic here
+                            _catController.reverse().then((_) {
+                              _catController.forward();
+                            });
+
+                            // Show the message
+                            setState(() {
+                              _isMessageVisible = true;
+                            });
+
+                            // Hide the message after 2 seconds
+                            Future.delayed(const Duration(seconds: 2), () {
+                              if (mounted) {
+                                setState(() {
+                                  _isMessageVisible = false;
+                                });
+                              }
+                            });
+                          },
+                          text: "Wake me up",
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Horizontal progress bars
+                // Positioned(
+                //   top: 250,
+                //   left: 20,
+                //   right: 20,
+                //   child: HorizontalProgress(
+                //     progressValues: widget.goal.progressByMonth,
+                //     controller: _mainController,
+                //   ),
+                // ),
+
+                // Bottom detail card
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: buildBottomCard(screenHeight),
+                ),
+
+                // Cat animation
+                Positioned(
+                  bottom: screenHeight * 0.5 - 110,
+                  right: 30,
+                  child: GestureDetector(
+                    onTap: () {
+                      // Trigger the cat animation
+                      _catController.reverse().then((_) {
+                        _catController.forward();
+                      });
+
+                      // Show the message
+                      setState(() {
+                        _isMessageVisible = true;
+                      });
+
+                      // Hide the message after 2 seconds
+                      Future.delayed(const Duration(seconds: 2), () {
+                        if (mounted) {
+                          setState(() {
+                            _isMessageVisible = false;
+                          });
+                        }
+                      });
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      clipBehavior:
+                          Clip.none, // Ensure the message is not clipped
+                      children: [
+                        // Cat animation
+                        ScaleTransition(
+                          scale: _catScaleAnimation,
+                          child: RotationTransition(
+                            turns: Tween<double>(begin: 0, end: 1).animate(
+                              CurvedAnimation(
+                                parent: _catController,
+                                curve: Curves.easeInOut,
+                              ),
+                            ),
+                            child: Lottie.asset(
+                              'assets/Lottie/cat_sleeping.json',
+                              height: 230,
+                              reverse: true,
+                            ),
                           ),
                         ),
-                      ),
-                      // Message overlay
-                      if (_isMessageVisible)
-                        Positioned(
-                          top: -10, // Position the message above the cat
-                          child: Material(
-                            color: Colors.transparent,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black87,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Text(
-                                "Please, let me sleep",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: 'LuckiestGuy',
-                                  fontStyle: FontStyle.italic,
+                        // Message overlay
+                        if (_isMessageVisible)
+                          Positioned(
+                            top: -10, // Position the message above the cat
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black87,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Text(
+                                  "Please, let me sleep",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontFamily: 'LuckiestGuy',
+                                    fontStyle: FontStyle.italic,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              // Back button
-              Positioned(
-                top: 40,
-                left: 5,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back, size: 28),
-                  onPressed: () => Navigator.of(context).pop(),
+                // Back button
+                Positioned(
+                  top: 40,
+                  left: 5,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, size: 28),
+                    onPressed: () async {
+                      await _handleExitAnimation(); // Ensure animations complete
+                      if (mounted) {
+                        Navigator.of(context).pop(); // Pop the screen
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
