@@ -101,7 +101,7 @@ class _MenuOverlayState extends State<MenuOverlay>
                 left: 0,
                 right: 0,
                 height: topHeight,
-                child: Container(color: Colors.deepPurple),
+                child: Container(color: Colors.lightBlueAccent.shade100),
               ),
 
               // Bottom shutter
@@ -110,7 +110,7 @@ class _MenuOverlayState extends State<MenuOverlay>
                 left: 0,
                 right: 0,
                 height: bottomHeight,
-                child: Container(color: Colors.deepPurple),
+                child: Container(color: Colors.lightBlueAccent.shade100),
               ),
 
               // Menu items (appear after shutters meet)
